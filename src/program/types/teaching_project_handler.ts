@@ -1,0 +1,3213 @@
+export type TeachingProjectHandler = {
+  "version": "0.1.0",
+  "name": "teaching_project_handler",
+  "instructions": [
+    {
+      "name": "createHighRank",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "highRankIdHandler",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "highRankAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "userTypeCode",
+          "type": "string"
+        }
+      ],
+      "returns": "bool"
+    },
+    {
+      "name": "createProfessor",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "initializationSystemAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "professorIdHandler",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "highRankIdHandler",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "professorAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "codeIdSubjectRelation",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "mint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "associatedTokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "rent",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "userTypeCode",
+          "type": "string"
+        },
+        {
+          "name": "subjectsArray",
+          "type": {
+            "vec": "u32"
+          }
+        }
+      ],
+      "returns": "bool"
+    },
+    {
+      "name": "createStudent",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "initializationSystemAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "studentIdHandler",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "highRankIdHandler",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "studentAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "codeIdSubjectRelation",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "mint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "associatedTokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "rent",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "userTypeCode",
+          "type": "string"
+        },
+        {
+          "name": "subjectsArray",
+          "type": {
+            "vec": "u32"
+          }
+        }
+      ],
+      "returns": "bool"
+    },
+    {
+      "name": "createFaculty",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "initializationSystemAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "facultyIdHandler",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "highRank",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "facultyAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "name",
+          "type": "string"
+        }
+      ],
+      "returns": "bool"
+    },
+    {
+      "name": "createDegree",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "initializationSystemAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "degreeIdHandler",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "facultyIdHandler",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "highRank",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "degreeAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "facultyId",
+          "type": "i32"
+        }
+      ],
+      "returns": "bool"
+    },
+    {
+      "name": "createSpecialty",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "initializationSystemAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "specialtyIdHandler",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "degreeIdHandler",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "highRank",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "specialtyAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "degreeId",
+          "type": "i32"
+        }
+      ],
+      "returns": "bool"
+    },
+    {
+      "name": "createSubject",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "initializationSystemAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "highRank",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "subjectIdHandler",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "degreeIdHandler",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "specialtyIdHandler",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "subjectAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "proposalIdHandler",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "professorProposalIdHandler",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "codeIdSubjectRelationAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "degreeId",
+          "type": "i32"
+        },
+        {
+          "name": "specialtyId",
+          "type": "i32"
+        },
+        {
+          "name": "course",
+          "type": {
+            "defined": "SubjectCourse"
+          }
+        },
+        {
+          "name": "code",
+          "type": "u32"
+        },
+        {
+          "name": "teachingProjectReference",
+          "type": "string"
+        }
+      ],
+      "returns": "bool"
+    },
+    {
+      "name": "createProposalByStudent",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "initializationSystemAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "studentCreator",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "proposalIdHandler",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "professorProposalIdHandler",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "subjectIdHandler",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "proposalAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "professorProposalAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "subjectAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "codeIdSubjectRelation",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "title",
+          "type": "string"
+        },
+        {
+          "name": "content",
+          "type": "string"
+        }
+      ],
+      "returns": "bool"
+    },
+    {
+      "name": "createProposalByProfessor",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "initializationSystemAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "professorCreator",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "proposalIdHandler",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "professorProposalIdHandler",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "subjectIdHandler",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "proposalAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "professorProposalAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "subjectAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "codeIdSubjectRelation",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "title",
+          "type": "string"
+        },
+        {
+          "name": "content",
+          "type": "string"
+        }
+      ],
+      "returns": "bool"
+    },
+    {
+      "name": "voteProposalByStudent",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "votingStudent",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "subjectIdHandler",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "proposalAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "subjectAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "professorProposalIdHandler",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "professorProposalAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "vote",
+          "type": "bool"
+        }
+      ],
+      "returns": "string"
+    },
+    {
+      "name": "voteProposalByProfessor",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "votingProfessor",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "subjectIdHandler",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "proposalAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "subjectAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "professorProposalIdHandler",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "professorProposalAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "vote",
+          "type": "bool"
+        }
+      ],
+      "returns": "string"
+    },
+    {
+      "name": "updateProposalByProfessor",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "professorAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "proposalAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "professorProposalAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "subjectAccount",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "teachingProjectReference",
+          "type": "string"
+        }
+      ],
+      "returns": "bool"
+    },
+    {
+      "name": "updateProposalByHighRank",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "highRankAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "proposalAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "professorProposalAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "subjectAccount",
+          "isMut": true,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "accepted",
+          "type": "bool"
+        }
+      ],
+      "returns": "bool"
+    },
+    {
+      "name": "giveCreditsToWinningStudent",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "highRankAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "proposalAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "creatorAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "mintAuthorityAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "mint",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "associatedTokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "rent",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "userTypeCode",
+          "type": "string"
+        },
+        {
+          "name": "subjectCode",
+          "type": "u32"
+        },
+        {
+          "name": "mintAuthorityBump",
+          "type": "u8"
+        }
+      ],
+      "returns": "bool"
+    },
+    {
+      "name": "giveCreditsToWinningProfessor",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "highRankAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "proposalAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "creatorAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "mintAuthorityAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "mint",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "associatedTokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "rent",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "userTypeCode",
+          "type": "string"
+        },
+        {
+          "name": "subjectCode",
+          "type": "u32"
+        },
+        {
+          "name": "mintAuthorityBump",
+          "type": "u8"
+        }
+      ],
+      "returns": "bool"
+    },
+    {
+      "name": "deleteRejectedProposalAccount",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "highRankAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "proposalAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "professorProposalAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "subjectAccount",
+          "isMut": true,
+          "isSigner": false
+        }
+      ],
+      "args": [],
+      "returns": "bool"
+    },
+    {
+      "name": "initializateNewSystem",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "initializationSystemAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "highRankAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "codeIdSubjectRelation",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "degreeIdHandler",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "facultyIdHandler",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "specialtyIdHandler",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "subjectIdHandler",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "mintAuthorityAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "mint",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "userTypeCode",
+          "type": "string"
+        }
+      ],
+      "returns": "bool"
+    }
+  ],
+  "accounts": [
+    {
+      "name": "highRank",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "id",
+            "type": "i32"
+          },
+          {
+            "name": "identifierCodeHash",
+            "type": "string"
+          },
+          {
+            "name": "authority",
+            "type": "publicKey"
+          },
+          {
+            "name": "pendentProfessorProposals",
+            "type": {
+              "vec": "i64"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "idHandler",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "smallerIdAvailable",
+            "type": "i32"
+          },
+          {
+            "name": "reusedId",
+            "type": {
+              "vec": "i64"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "professor",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "id",
+            "type": "i32"
+          },
+          {
+            "name": "identifierCodeHash",
+            "type": "string"
+          },
+          {
+            "name": "authority",
+            "type": "publicKey"
+          },
+          {
+            "name": "subjects",
+            "type": {
+              "vec": "u32"
+            }
+          },
+          {
+            "name": "pendentLearningProjectProposal",
+            "type": {
+              "vec": "i64"
+            }
+          },
+          {
+            "name": "pendentVotationProposals",
+            "type": {
+              "vec": "i64"
+            }
+          },
+          {
+            "name": "punishments",
+            "type": "u8"
+          },
+          {
+            "name": "rewards",
+            "type": "u32"
+          }
+        ]
+      }
+    },
+    {
+      "name": "student",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "id",
+            "type": "i32"
+          },
+          {
+            "name": "identifierCodeHash",
+            "type": "string"
+          },
+          {
+            "name": "authority",
+            "type": "publicKey"
+          },
+          {
+            "name": "subjects",
+            "type": {
+              "vec": "u32"
+            }
+          },
+          {
+            "name": "pendentVotationProposals",
+            "type": {
+              "vec": "i64"
+            }
+          },
+          {
+            "name": "punishments",
+            "type": "u8"
+          },
+          {
+            "name": "rewards",
+            "type": "u32"
+          }
+        ]
+      }
+    },
+    {
+      "name": "faculty",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "id",
+            "type": "i32"
+          },
+          {
+            "name": "name",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "degree",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "id",
+            "type": "i32"
+          },
+          {
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "name": "facultyId",
+            "type": "i32"
+          }
+        ]
+      }
+    },
+    {
+      "name": "specialty",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "id",
+            "type": "i32"
+          },
+          {
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "name": "degreeId",
+            "type": "i32"
+          }
+        ]
+      }
+    },
+    {
+      "name": "subject",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "type": "i32"
+          },
+          {
+            "name": "code",
+            "type": "u32"
+          },
+          {
+            "name": "degreeId",
+            "type": "i32"
+          },
+          {
+            "name": "specialtyId",
+            "type": "i32"
+          },
+          {
+            "name": "teachingProjectReference",
+            "type": "string"
+          },
+          {
+            "name": "course",
+            "type": {
+              "defined": "SubjectCourse"
+            }
+          },
+          {
+            "name": "pendingProposals",
+            "type": {
+              "vec": "i32"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "proposal",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "studentsThatHaveVoted",
+            "type": {
+              "vec": "i32"
+            }
+          },
+          {
+            "name": "professorsThatHaveVoted",
+            "type": {
+              "vec": "i32"
+            }
+          },
+          {
+            "name": "id",
+            "type": "i32"
+          },
+          {
+            "name": "title",
+            "type": "string"
+          },
+          {
+            "name": "content",
+            "type": "string"
+          },
+          {
+            "name": "creatorId",
+            "type": "i32"
+          },
+          {
+            "name": "creatorPublicKey",
+            "type": "publicKey"
+          },
+          {
+            "name": "userType",
+            "type": {
+              "defined": "ProposalUserType"
+            }
+          },
+          {
+            "name": "subjectId",
+            "type": "i32"
+          },
+          {
+            "name": "supportingVotes",
+            "type": "u32"
+          },
+          {
+            "name": "againstVotes",
+            "type": "u32"
+          },
+          {
+            "name": "expectedVotes",
+            "type": "u32"
+          },
+          {
+            "name": "publishingTimestamp",
+            "type": "i64"
+          },
+          {
+            "name": "endingTimestamp",
+            "type": "i64"
+          },
+          {
+            "name": "updatedByTeacher",
+            "type": "bool"
+          },
+          {
+            "name": "highRankValidation",
+            "type": "bool"
+          },
+          {
+            "name": "state",
+            "type": {
+              "defined": "ProposalState"
+            }
+          },
+          {
+            "name": "associatedProfessorProposalId",
+            "type": "i32"
+          }
+        ]
+      }
+    },
+    {
+      "name": "professorProposal",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "id",
+            "type": "i32"
+          },
+          {
+            "name": "originalProposalId",
+            "type": "i32"
+          },
+          {
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "name": "publishingTimestamp",
+            "type": "i64"
+          },
+          {
+            "name": "endingTimestamp",
+            "type": "i64"
+          },
+          {
+            "name": "teachingProjectReference",
+            "type": "string"
+          },
+          {
+            "name": "state",
+            "type": {
+              "defined": "ProfessorProposalState"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "codeIdSubjectRelation",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "keyId",
+            "type": {
+              "vec": "i32"
+            }
+          },
+          {
+            "name": "codeValue",
+            "type": {
+              "vec": {
+                "defined": "AdditionalSubjectInfo"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "systemInitialization",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "systemIsInitialized",
+            "type": "bool"
+          }
+        ]
+      }
+    }
+  ],
+  "types": [
+    {
+      "name": "AdditionalSubjectInfo",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "code",
+            "type": "u32"
+          },
+          {
+            "name": "numberOfProfessors",
+            "type": "u8"
+          },
+          {
+            "name": "numberOfStudents",
+            "type": "u16"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ProposalState",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "VotationInProgress"
+          },
+          {
+            "name": "WaitingForTeacher"
+          },
+          {
+            "name": "WaitingForHighRank"
+          },
+          {
+            "name": "Rejected"
+          },
+          {
+            "name": "Accepted"
+          },
+          {
+            "name": "AcceptedAndTokensGranted"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ProfessorProposalState",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Pending"
+          },
+          {
+            "name": "Complete"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ProposalUserType",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Student"
+          },
+          {
+            "name": "Professor"
+          }
+        ]
+      }
+    },
+    {
+      "name": "SubjectCourse",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "NotDefined"
+          },
+          {
+            "name": "First"
+          },
+          {
+            "name": "Second"
+          },
+          {
+            "name": "Third"
+          },
+          {
+            "name": "Fourth"
+          },
+          {
+            "name": "Fifth"
+          },
+          {
+            "name": "Sixth"
+          },
+          {
+            "name": "Seventh"
+          },
+          {
+            "name": "Eighth"
+          },
+          {
+            "name": "Nineth"
+          }
+        ]
+      }
+    }
+  ],
+  "events": [
+    {
+      "name": "NewProposalCreated",
+      "fields": [
+        {
+          "name": "proposalId",
+          "type": "i32",
+          "index": false
+        },
+        {
+          "name": "subjectId",
+          "type": "i32",
+          "index": false
+        }
+      ]
+    },
+    {
+      "name": "NewProfessorProposalCreated",
+      "fields": [
+        {
+          "name": "proposalId",
+          "type": "i32",
+          "index": false
+        },
+        {
+          "name": "professorProposalId",
+          "type": "i32",
+          "index": false
+        }
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "NotAnyHighRankInitializated",
+      "msg": "A HighRank must be initializated before creating a new professor or student"
+    },
+    {
+      "code": 6001,
+      "name": "IncorrectProfessorId",
+      "msg": "Incorrect professor's id submitted"
+    },
+    {
+      "code": 6002,
+      "name": "IncorrectStudentId",
+      "msg": "Incorrect student's id submitted"
+    },
+    {
+      "code": 6003,
+      "name": "UserHasAlreadyVoted",
+      "msg": "User has already voted on this proposal"
+    },
+    {
+      "code": 6004,
+      "name": "VotationIsNotOpen",
+      "msg": "Votation is not open"
+    },
+    {
+      "code": 6005,
+      "name": "VotationIsNotWaitingForTeacher",
+      "msg": "Votation is not waiting for Teacher"
+    },
+    {
+      "code": 6006,
+      "name": "VotationIsNotWaitingForHighRank",
+      "msg": "Votation is not waiting for High Rank"
+    },
+    {
+      "code": 6007,
+      "name": "VotationIsNotRejected",
+      "msg": "Votation is not Rejected"
+    },
+    {
+      "code": 6008,
+      "name": "VotationIsNotAccepted",
+      "msg": "Votation is not Accepted"
+    },
+    {
+      "code": 6009,
+      "name": "UserDoesNotBelongToTheSubject",
+      "msg": "User does not belong to the subject"
+    },
+    {
+      "code": 6010,
+      "name": "AdditionalSubjectInfoNotFound",
+      "msg": "Additional subject's info not found"
+    },
+    {
+      "code": 6011,
+      "name": "SystemIsNotInitializated",
+      "msg": "System has not been initializated by a HighRank yet"
+    },
+    {
+      "code": 6012,
+      "name": "IncorrectTeachingProjectReference",
+      "msg": "Incorrect Teaching Project reference for IPFS"
+    }
+  ]
+};
+
+export const IDL: TeachingProjectHandler = {
+  "version": "0.1.0",
+  "name": "teaching_project_handler",
+  "instructions": [
+    {
+      "name": "createHighRank",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "highRankIdHandler",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "highRankAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "userTypeCode",
+          "type": "string"
+        }
+      ],
+      "returns": "bool"
+    },
+    {
+      "name": "createProfessor",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "initializationSystemAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "professorIdHandler",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "highRankIdHandler",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "professorAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "codeIdSubjectRelation",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "mint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "associatedTokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "rent",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "userTypeCode",
+          "type": "string"
+        },
+        {
+          "name": "subjectsArray",
+          "type": {
+            "vec": "u32"
+          }
+        }
+      ],
+      "returns": "bool"
+    },
+    {
+      "name": "createStudent",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "initializationSystemAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "studentIdHandler",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "highRankIdHandler",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "studentAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "codeIdSubjectRelation",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "mint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "associatedTokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "rent",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "userTypeCode",
+          "type": "string"
+        },
+        {
+          "name": "subjectsArray",
+          "type": {
+            "vec": "u32"
+          }
+        }
+      ],
+      "returns": "bool"
+    },
+    {
+      "name": "createFaculty",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "initializationSystemAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "facultyIdHandler",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "highRank",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "facultyAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "name",
+          "type": "string"
+        }
+      ],
+      "returns": "bool"
+    },
+    {
+      "name": "createDegree",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "initializationSystemAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "degreeIdHandler",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "facultyIdHandler",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "highRank",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "degreeAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "facultyId",
+          "type": "i32"
+        }
+      ],
+      "returns": "bool"
+    },
+    {
+      "name": "createSpecialty",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "initializationSystemAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "specialtyIdHandler",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "degreeIdHandler",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "highRank",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "specialtyAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "degreeId",
+          "type": "i32"
+        }
+      ],
+      "returns": "bool"
+    },
+    {
+      "name": "createSubject",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "initializationSystemAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "highRank",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "subjectIdHandler",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "degreeIdHandler",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "specialtyIdHandler",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "subjectAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "proposalIdHandler",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "professorProposalIdHandler",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "codeIdSubjectRelationAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "degreeId",
+          "type": "i32"
+        },
+        {
+          "name": "specialtyId",
+          "type": "i32"
+        },
+        {
+          "name": "course",
+          "type": {
+            "defined": "SubjectCourse"
+          }
+        },
+        {
+          "name": "code",
+          "type": "u32"
+        },
+        {
+          "name": "teachingProjectReference",
+          "type": "string"
+        }
+      ],
+      "returns": "bool"
+    },
+    {
+      "name": "createProposalByStudent",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "initializationSystemAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "studentCreator",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "proposalIdHandler",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "professorProposalIdHandler",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "subjectIdHandler",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "proposalAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "professorProposalAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "subjectAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "codeIdSubjectRelation",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "title",
+          "type": "string"
+        },
+        {
+          "name": "content",
+          "type": "string"
+        }
+      ],
+      "returns": "bool"
+    },
+    {
+      "name": "createProposalByProfessor",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "initializationSystemAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "professorCreator",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "proposalIdHandler",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "professorProposalIdHandler",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "subjectIdHandler",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "proposalAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "professorProposalAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "subjectAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "codeIdSubjectRelation",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "title",
+          "type": "string"
+        },
+        {
+          "name": "content",
+          "type": "string"
+        }
+      ],
+      "returns": "bool"
+    },
+    {
+      "name": "voteProposalByStudent",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "votingStudent",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "subjectIdHandler",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "proposalAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "subjectAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "professorProposalIdHandler",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "professorProposalAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "vote",
+          "type": "bool"
+        }
+      ],
+      "returns": "string"
+    },
+    {
+      "name": "voteProposalByProfessor",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "votingProfessor",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "subjectIdHandler",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "proposalAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "subjectAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "professorProposalIdHandler",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "professorProposalAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "vote",
+          "type": "bool"
+        }
+      ],
+      "returns": "string"
+    },
+    {
+      "name": "updateProposalByProfessor",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "professorAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "proposalAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "professorProposalAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "subjectAccount",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "teachingProjectReference",
+          "type": "string"
+        }
+      ],
+      "returns": "bool"
+    },
+    {
+      "name": "updateProposalByHighRank",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "highRankAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "proposalAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "professorProposalAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "subjectAccount",
+          "isMut": true,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "accepted",
+          "type": "bool"
+        }
+      ],
+      "returns": "bool"
+    },
+    {
+      "name": "giveCreditsToWinningStudent",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "highRankAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "proposalAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "creatorAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "mintAuthorityAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "mint",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "associatedTokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "rent",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "userTypeCode",
+          "type": "string"
+        },
+        {
+          "name": "subjectCode",
+          "type": "u32"
+        },
+        {
+          "name": "mintAuthorityBump",
+          "type": "u8"
+        }
+      ],
+      "returns": "bool"
+    },
+    {
+      "name": "giveCreditsToWinningProfessor",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "highRankAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "proposalAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "creatorAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "mintAuthorityAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "mint",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "associatedTokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "rent",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "userTypeCode",
+          "type": "string"
+        },
+        {
+          "name": "subjectCode",
+          "type": "u32"
+        },
+        {
+          "name": "mintAuthorityBump",
+          "type": "u8"
+        }
+      ],
+      "returns": "bool"
+    },
+    {
+      "name": "deleteRejectedProposalAccount",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "highRankAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "proposalAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "professorProposalAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "subjectAccount",
+          "isMut": true,
+          "isSigner": false
+        }
+      ],
+      "args": [],
+      "returns": "bool"
+    },
+    {
+      "name": "initializateNewSystem",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "initializationSystemAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "highRankAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "codeIdSubjectRelation",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "degreeIdHandler",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "facultyIdHandler",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "specialtyIdHandler",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "subjectIdHandler",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "mintAuthorityAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "mint",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "userTypeCode",
+          "type": "string"
+        }
+      ],
+      "returns": "bool"
+    }
+  ],
+  "accounts": [
+    {
+      "name": "highRank",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "id",
+            "type": "i32"
+          },
+          {
+            "name": "identifierCodeHash",
+            "type": "string"
+          },
+          {
+            "name": "authority",
+            "type": "publicKey"
+          },
+          {
+            "name": "pendentProfessorProposals",
+            "type": {
+              "vec": "i64"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "idHandler",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "smallerIdAvailable",
+            "type": "i32"
+          },
+          {
+            "name": "reusedId",
+            "type": {
+              "vec": "i64"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "professor",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "id",
+            "type": "i32"
+          },
+          {
+            "name": "identifierCodeHash",
+            "type": "string"
+          },
+          {
+            "name": "authority",
+            "type": "publicKey"
+          },
+          {
+            "name": "subjects",
+            "type": {
+              "vec": "u32"
+            }
+          },
+          {
+            "name": "pendentLearningProjectProposal",
+            "type": {
+              "vec": "i64"
+            }
+          },
+          {
+            "name": "pendentVotationProposals",
+            "type": {
+              "vec": "i64"
+            }
+          },
+          {
+            "name": "punishments",
+            "type": "u8"
+          },
+          {
+            "name": "rewards",
+            "type": "u32"
+          }
+        ]
+      }
+    },
+    {
+      "name": "student",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "id",
+            "type": "i32"
+          },
+          {
+            "name": "identifierCodeHash",
+            "type": "string"
+          },
+          {
+            "name": "authority",
+            "type": "publicKey"
+          },
+          {
+            "name": "subjects",
+            "type": {
+              "vec": "u32"
+            }
+          },
+          {
+            "name": "pendentVotationProposals",
+            "type": {
+              "vec": "i64"
+            }
+          },
+          {
+            "name": "punishments",
+            "type": "u8"
+          },
+          {
+            "name": "rewards",
+            "type": "u32"
+          }
+        ]
+      }
+    },
+    {
+      "name": "faculty",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "id",
+            "type": "i32"
+          },
+          {
+            "name": "name",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "degree",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "id",
+            "type": "i32"
+          },
+          {
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "name": "facultyId",
+            "type": "i32"
+          }
+        ]
+      }
+    },
+    {
+      "name": "specialty",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "id",
+            "type": "i32"
+          },
+          {
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "name": "degreeId",
+            "type": "i32"
+          }
+        ]
+      }
+    },
+    {
+      "name": "subject",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "type": "i32"
+          },
+          {
+            "name": "code",
+            "type": "u32"
+          },
+          {
+            "name": "degreeId",
+            "type": "i32"
+          },
+          {
+            "name": "specialtyId",
+            "type": "i32"
+          },
+          {
+            "name": "teachingProjectReference",
+            "type": "string"
+          },
+          {
+            "name": "course",
+            "type": {
+              "defined": "SubjectCourse"
+            }
+          },
+          {
+            "name": "pendingProposals",
+            "type": {
+              "vec": "i32"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "proposal",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "studentsThatHaveVoted",
+            "type": {
+              "vec": "i32"
+            }
+          },
+          {
+            "name": "professorsThatHaveVoted",
+            "type": {
+              "vec": "i32"
+            }
+          },
+          {
+            "name": "id",
+            "type": "i32"
+          },
+          {
+            "name": "title",
+            "type": "string"
+          },
+          {
+            "name": "content",
+            "type": "string"
+          },
+          {
+            "name": "creatorId",
+            "type": "i32"
+          },
+          {
+            "name": "creatorPublicKey",
+            "type": "publicKey"
+          },
+          {
+            "name": "userType",
+            "type": {
+              "defined": "ProposalUserType"
+            }
+          },
+          {
+            "name": "subjectId",
+            "type": "i32"
+          },
+          {
+            "name": "supportingVotes",
+            "type": "u32"
+          },
+          {
+            "name": "againstVotes",
+            "type": "u32"
+          },
+          {
+            "name": "expectedVotes",
+            "type": "u32"
+          },
+          {
+            "name": "publishingTimestamp",
+            "type": "i64"
+          },
+          {
+            "name": "endingTimestamp",
+            "type": "i64"
+          },
+          {
+            "name": "updatedByTeacher",
+            "type": "bool"
+          },
+          {
+            "name": "highRankValidation",
+            "type": "bool"
+          },
+          {
+            "name": "state",
+            "type": {
+              "defined": "ProposalState"
+            }
+          },
+          {
+            "name": "associatedProfessorProposalId",
+            "type": "i32"
+          }
+        ]
+      }
+    },
+    {
+      "name": "professorProposal",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "id",
+            "type": "i32"
+          },
+          {
+            "name": "originalProposalId",
+            "type": "i32"
+          },
+          {
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "name": "publishingTimestamp",
+            "type": "i64"
+          },
+          {
+            "name": "endingTimestamp",
+            "type": "i64"
+          },
+          {
+            "name": "teachingProjectReference",
+            "type": "string"
+          },
+          {
+            "name": "state",
+            "type": {
+              "defined": "ProfessorProposalState"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "codeIdSubjectRelation",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "keyId",
+            "type": {
+              "vec": "i32"
+            }
+          },
+          {
+            "name": "codeValue",
+            "type": {
+              "vec": {
+                "defined": "AdditionalSubjectInfo"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "systemInitialization",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "systemIsInitialized",
+            "type": "bool"
+          }
+        ]
+      }
+    }
+  ],
+  "types": [
+    {
+      "name": "AdditionalSubjectInfo",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "code",
+            "type": "u32"
+          },
+          {
+            "name": "numberOfProfessors",
+            "type": "u8"
+          },
+          {
+            "name": "numberOfStudents",
+            "type": "u16"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ProposalState",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "VotationInProgress"
+          },
+          {
+            "name": "WaitingForTeacher"
+          },
+          {
+            "name": "WaitingForHighRank"
+          },
+          {
+            "name": "Rejected"
+          },
+          {
+            "name": "Accepted"
+          },
+          {
+            "name": "AcceptedAndTokensGranted"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ProfessorProposalState",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Pending"
+          },
+          {
+            "name": "Complete"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ProposalUserType",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Student"
+          },
+          {
+            "name": "Professor"
+          }
+        ]
+      }
+    },
+    {
+      "name": "SubjectCourse",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "NotDefined"
+          },
+          {
+            "name": "First"
+          },
+          {
+            "name": "Second"
+          },
+          {
+            "name": "Third"
+          },
+          {
+            "name": "Fourth"
+          },
+          {
+            "name": "Fifth"
+          },
+          {
+            "name": "Sixth"
+          },
+          {
+            "name": "Seventh"
+          },
+          {
+            "name": "Eighth"
+          },
+          {
+            "name": "Nineth"
+          }
+        ]
+      }
+    }
+  ],
+  "events": [
+    {
+      "name": "NewProposalCreated",
+      "fields": [
+        {
+          "name": "proposalId",
+          "type": "i32",
+          "index": false
+        },
+        {
+          "name": "subjectId",
+          "type": "i32",
+          "index": false
+        }
+      ]
+    },
+    {
+      "name": "NewProfessorProposalCreated",
+      "fields": [
+        {
+          "name": "proposalId",
+          "type": "i32",
+          "index": false
+        },
+        {
+          "name": "professorProposalId",
+          "type": "i32",
+          "index": false
+        }
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "NotAnyHighRankInitializated",
+      "msg": "A HighRank must be initializated before creating a new professor or student"
+    },
+    {
+      "code": 6001,
+      "name": "IncorrectProfessorId",
+      "msg": "Incorrect professor's id submitted"
+    },
+    {
+      "code": 6002,
+      "name": "IncorrectStudentId",
+      "msg": "Incorrect student's id submitted"
+    },
+    {
+      "code": 6003,
+      "name": "UserHasAlreadyVoted",
+      "msg": "User has already voted on this proposal"
+    },
+    {
+      "code": 6004,
+      "name": "VotationIsNotOpen",
+      "msg": "Votation is not open"
+    },
+    {
+      "code": 6005,
+      "name": "VotationIsNotWaitingForTeacher",
+      "msg": "Votation is not waiting for Teacher"
+    },
+    {
+      "code": 6006,
+      "name": "VotationIsNotWaitingForHighRank",
+      "msg": "Votation is not waiting for High Rank"
+    },
+    {
+      "code": 6007,
+      "name": "VotationIsNotRejected",
+      "msg": "Votation is not Rejected"
+    },
+    {
+      "code": 6008,
+      "name": "VotationIsNotAccepted",
+      "msg": "Votation is not Accepted"
+    },
+    {
+      "code": 6009,
+      "name": "UserDoesNotBelongToTheSubject",
+      "msg": "User does not belong to the subject"
+    },
+    {
+      "code": 6010,
+      "name": "AdditionalSubjectInfoNotFound",
+      "msg": "Additional subject's info not found"
+    },
+    {
+      "code": 6011,
+      "name": "SystemIsNotInitializated",
+      "msg": "System has not been initializated by a HighRank yet"
+    },
+    {
+      "code": 6012,
+      "name": "IncorrectTeachingProjectReference",
+      "msg": "Incorrect Teaching Project reference for IPFS"
+    }
+  ]
+};
