@@ -12,7 +12,7 @@
             <div v-for="(subject, index) in subjectList" :key=index>
 
                 <SubjectListComponent :name="subject.name" :code="subject.code" :course="getCourseIndex(subject.course)"
-                    :pendingProposals="getArrayLength(subject.pendingProposals)" :id="subject.id" />
+                    :pendingProposals="getArrayLength(subject.pendingProposals)" :id="subject.id" :readingMode="readingModeRef" />
 
             </div>
 
@@ -45,6 +45,7 @@ let subjectList: Ref = ref(null);
 let error: Ref = ref(false);
 let errorMessage: Ref = ref("")
 let isLoading: Ref = ref(true)
+let readingModeRef: Ref = ref(true)
 
 onMounted(async () => {
 

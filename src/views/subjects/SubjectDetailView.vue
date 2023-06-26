@@ -44,12 +44,14 @@
 
                         <div class="d-flex flex-row justify-content-center align-items-center">
 
-                            <button class="btn btn-primary btn-lg m-5 p-3">Ver proyecto docente</button>
+                            <button class="btn btn-primary btn-lg m-5 p-3" @click="onWatchTeachingProjectSystem">Ver
+                                proyecto docente</button>
 
-                            <router-link :to="{ name: 'createProposal', params: { subject_id: subject.id } }">
-                                <button class="btn btn-primary btn-lg m-5 p-3">Crear nueva propuesta</button>
-                            </router-link>
-
+                            <div v-if="!readingModeRef">
+                                <router-link :to="{ name: 'createProposal', params: { subject_id: subject.id } }">
+                                    <button class="btn btn-primary btn-lg m-5 p-3">Crear nueva propuesta</button>
+                                </router-link>
+                            </div>
 
                         </div>
 
@@ -62,9 +64,58 @@
                     <h2>Propuestas pendientes</h2>
                     <hr class="hr">
 
-                    <div v-for="(proposal, index) in pendingProposalList" :key="index">
+                    <div v-if="getArrayLength(pendingProposalList) == 0" class="mt-4">
 
-                        <ProposalListComponent :name="proposal.title" :id="proposal.id" :showVotingInfo="false" :votingInfo="false" :subjectCode="subject.code"/>
+                        <h6 class="noProposalsInfo">No hay propuestas pendientes para esta asignatura actualmente</h6>
+
+                    </div>
+
+                    <div v-else v-for="(proposal, index) in pendingProposalList" :key="index">
+
+                        <ProposalListComponent :name="proposal.title" :id="proposal.id" :showVotingInfo="false"
+                            :votingInfo="false" :subjectCode="subject.code" />
+
+                    </div>
+
+                </div>
+
+                <div id="acceptedProposals" class="mt-5 mx-4">
+
+                    <h2>Propuestas aceptadas</h2>
+                    <hr class="hr">
+
+
+                    <div v-if="getArrayLength(acceptedProposalList) == 0" class="mt-4">
+
+                        <h6 class="noProposalsInfo">Todavía no hay propuestas aceptadas para esta asignatura</h6>
+
+                    </div>
+
+                    <div v-else v-for="(proposal, index) in acceptedProposalList" :key="index">
+
+                        <ProposalListComponent :name="proposal.title" :id="proposal.id" :showVotingInfo="false"
+                            :votingInfo="false" :subjectCode="subject.code" />
+
+                    </div>
+
+                </div>
+
+                <div id="rejectedProposals" class="mt-5 mx-4">
+
+                    <h2>Propuestas rechazadas</h2>
+                    <hr class="hr">
+
+
+                    <div v-if="getArrayLength(rejectedProposalList) == 0" class="mt-4">
+
+                        <h6 class="noProposalsInfo">No hay propuestas rechazadas para esta asignatura</h6>
+
+                    </div>
+
+                    <div v-else v-for="(proposal, index) in rejectedProposalList" :key="index">
+
+                        <ProposalListComponent :name="proposal.title" :id="proposal.id" :showVotingInfo="false"
+                            :votingInfo="false" :subjectCode="subject.code" />
 
                     </div>
 
@@ -85,7 +136,6 @@
 
 <script lang="ts" setup>
 
-import { fetchSubjectAccount } from '@/services/FetchAccountService';
 import SubjectService from '@/services/SubjectService';
 import { onMounted, Ref, ref } from 'vue';
 import { useRoute } from "vue-router";
@@ -93,35 +143,67 @@ import ProposalListComponent from '@/components/proposals/ProposalListComponent.
 import ProposalService from '@/services/ProposalService';
 import FacultyService from '@/services/FacultyService';
 import SpecialtyService from '@/services/SpecialtyService';
-import { getCourseIndex } from '@/composables/useAuxFunctions';
+import { getCourseIndex, getArrayLength } from '@/composables/useAuxFunctions';
+import IpfsService from '@/services/IpfsService';
 
 let subject: Ref = ref(null)
 let faculty: Ref = ref(null)
 let specialty: Ref = ref(null)
 let pendingProposalList: Ref = ref(null)
-
+let acceptedProposalList: Ref = ref(null)
+let rejectedProposalList: Ref = ref(null)
 
 let isLoading: Ref = ref(true)
 let error: Ref = ref(false)
 let errorMessage: Ref = ref("")
 
+let readingModeRef: Ref = ref(true)
+
 onMounted(async () => {
+
     const route = useRoute()
 
     try {
+
         const id = Number(route.params.id).valueOf()
+
+        const readingMode = String(route.params.readingMode).valueOf() == 'true'
+        readingModeRef.value = readingMode
+
         subject.value = await new SubjectService().fetchSubjectAccountWithId(id)
-        pendingProposalList.value = await new ProposalService().getProposalForSubjectWithState({ votationInProgress: {} }, subject.value.id, subject.value.code)
+
+        const votationInProgressProposalList = await new ProposalService().getProposalForSubjectWithState({ votationInProgress: {} }, subject.value.id, subject.value.code)
+        const waitingForTeacherProposalList = await new ProposalService().getProposalForSubjectWithState({ waitingForTeacher: {} }, subject.value.id, subject.value.code)
+        const waitingForHighRankProposalList = await new ProposalService().getProposalForSubjectWithState({ waitingForHighRank: {} }, subject.value.id, subject.value.code)
+
+        pendingProposalList.value = []
+        pendingProposalList.value.push(...votationInProgressProposalList, ...waitingForTeacherProposalList, ...waitingForHighRankProposalList)
+
+        const acceptedProposals = await new ProposalService().getProposalForSubjectWithState({ acceptedAndTokensGranted: {} }, subject.value.id, subject.value.code)
+
+        acceptedProposalList.value = acceptedProposals
+
+        const rejectedProposals = await new ProposalService().getProposalForSubjectWithState({ rejected: {} }, subject.value.id, subject.value.code)
+
+        rejectedProposalList.value = rejectedProposals
+
         faculty.value = await new FacultyService().getFacultyWithId(subject.value.id)
         specialty.value = await new SpecialtyService().getSpecialtyWithId(subject.value.id)
+
         isLoading.value = false;
+
     } catch {
+
         errorMessage.value = "No se ha podido recuperar la información de la asignatura"
         isLoading.value = false;
         error.value = true;
-    }
 
+    }
 })
+
+function onWatchTeachingProjectSystem() {
+    new IpfsService().watchTeachingProject(subject.value.teachingProjectReference)
+}
 
 </script>
 
@@ -151,12 +233,18 @@ i {
     color: red;
 }
 
-
-#pendingProposals {
+#pendingProposals,
+#acceptedProposals,
+#rejectedProposals {
     hr {
         border-top: 10px solid $complementary;
         margin-top: 0px;
     }
+}
+
+.noProposalsInfo {
+    text-align: center;
+    color:red;
 }
 
 #subjectData {

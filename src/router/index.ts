@@ -32,7 +32,7 @@ const routes: Array<RouteRecordRaw> = [
     },
 
     {
-        path: '/subjectDetail/:id',
+        path: '/subjectDetail/:id/:readingMode',
         name: 'subjectDetail',
         component: SubjectDetailView
     },

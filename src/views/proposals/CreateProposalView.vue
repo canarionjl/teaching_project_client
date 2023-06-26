@@ -29,10 +29,6 @@
 
                     <small v-if="contentIsValidRef == false"> {{ contentErrorMessageRef }}</small>
 
-                    <div v-if="proposalAdded == true" id="returnMessage">
-                        <SuccessMessageComponent msg="Operación realizada satisfactoriamente" />
-                    </div>
-
                 </div>
 
             </div>
@@ -64,7 +60,6 @@ import { validateInputText } from '@/composables/useAuxFunctions'
 import ProposalService from '@/services/ProposalService'
 import SubjectService from '@/services/SubjectService'
 import { useAuthStore } from '@/store/authCodeStore';
-import { storeToRefs } from 'pinia';
 import { getReturn } from '@/composables/useAuxFunctions';
 import { onMounted } from 'vue';
 import { useRoute } from 'vue-router';
@@ -111,16 +106,16 @@ const onCreateProposalClicked = async () => {
     const [contentIsValid, contentErrorMessage] = validateInputText(200, proposalContent.value)
 
     const store = useAuthStore()
-    const { hashedAuthCode } = storeToRefs(store)
+    const hashedAuthCode = store.hashedAuthCode
 
     let tx = "";
 
     if (titleIsValid && contentIsValid) {
-        if (hashedAuthCode.value.toString() == "edee29f882543b956620b26d0ee0e7e950399b1c4222f5de05e06425b4c995e9") {
 
+        if (hashedAuthCode.toString() == "edee29f882543b956620b26d0ee0e7e950399b1c4222f5de05e06425b4c995e9") {
             tx = await new ProposalService().createProposalByProfessor(proposalTitle.value, proposalContent.value, subject.value.id)
         }
-        else if (hashedAuthCode.value.toString() == "318aee3fed8c9d040d35a7fc1fa776fb31303833aa2de885354ddf3d44d8fb69") {
+        else if (hashedAuthCode.toString() == "318aee3fed8c9d040d35a7fc1fa776fb31303833aa2de885354ddf3d44d8fb69") {
             tx = await new ProposalService().createProposalByProfessor(proposalTitle.value, proposalContent.value, subject.value.id)
         }
         else {

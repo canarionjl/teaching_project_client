@@ -18,7 +18,7 @@ export const useAuthStore = defineStore('authCode', {
 
   getters: {
 
-    hashedAuthCode: (authCode) => CryptoJS.SHA256(authCode)
+    hashedAuthCode: (authCode) => CryptoJS.SHA256(authCode.authCode)
 
   },
 

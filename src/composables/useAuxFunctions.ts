@@ -119,6 +119,37 @@ export function validateSubjectCode(code: string) {
   return [isValid, errorMessage]
 }
 
+export function validateInputFile(input: File) {
+
+  let isValid = true
+  let errorMessage = ""
+
+  if (!input || input == null) {
+    isValid = false
+    errorMessage = "Debe introducir un fichero en PDF para poder completar el formulario"
+  }
+
+  else if (input.type != "application/pdf") {
+    isValid = false
+    errorMessage = "El archivo introducido debe ser de tipo PDF"
+  }
+
+  return [isValid, errorMessage]
+
+}
+
+export function validateIpfsReference(reference: string) {
+
+  if (!reference || reference == null) {
+    return false
+  }
+  else if (reference.length != 46) {
+    return false
+  }
+  return true
+  
+}
+
 
 
 
@@ -160,17 +191,17 @@ export async function getReturn(isBoolean: boolean, isString: boolean, tx: any) 
 
 
 export function getArrayLength(array: []) {
-    return array.length
+  return array.length
 }
 
 
 
 export function convertUnixTimestampToDate(unixTimestamp: number): string {
 
-  const date = new Date(unixTimestamp * 1000); 
+  const date = new Date(unixTimestamp * 1000);
 
   const day = date.getDate();
-  const month = date.getMonth() + 1; 
+  const month = date.getMonth() + 1;
   const year = date.getFullYear();
 
   const formattedDay = day.toString().padStart(2, '0');
@@ -181,7 +212,7 @@ export function convertUnixTimestampToDate(unixTimestamp: number): string {
 }
 
 
-export function getProposalState (stateObject: any) {
+export function getProposalState(stateObject: any) {
 
   const state = Object.keys(stateObject)[0]
   const capitalized_state = state.charAt(0).toUpperCase() + state.slice(1);
@@ -193,16 +224,16 @@ export function getProposalState (stateObject: any) {
 
 export async function getUserInfo(): Promise<[boolean, any]> {
 
-  const {hashedAuthCode} = useAuthStore()
-  
+  const { hashedAuthCode } = useAuthStore()
+
   if (hashedAuthCode.toString() == "edee29f882543b956620b26d0ee0e7e950399b1c4222f5de05e06425b4c995e9") {
-      const user: any = await new UserService().fetchProfessorAccountForWallet()
-      return [true, user]
+    const user: any = await new UserService().fetchProfessorAccountForWallet()
+    return [true, user]
   }
 
   else if (hashedAuthCode.toString() == "318aee3fed8c9d040d35a7fc1fa776fb31303833aa2de885354ddf3d44d8fb69") {
-      const user: any = await new UserService().fetchStudentAccountForWallet()
-      return [false, user]
+    const user: any = await new UserService().fetchStudentAccountForWallet()
+    return [false, user]
   }
 
   return [false, null];

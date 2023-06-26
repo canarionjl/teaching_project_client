@@ -19,7 +19,7 @@
 
             <div class="col-2">
                 <div>
-                    <router-link :to="{ name: 'subjectDetail', params: { id: props.id } }">
+                    <router-link :to="{ name: 'subjectDetail', params: { id: props.id, readingMode: props.readingMode.toString() } }">
                         <button type="button" id="subjectDetailButton" class="btn btn-primary px-3 py-2"> Ver asignatura </button>
                     </router-link>
                 </div>
@@ -54,6 +54,10 @@ const props = defineProps({
     },
     id: {
         type: Number,
+        required: true
+    },
+    readingMode: {
+        type: Boolean,
         required: true
     }
 })

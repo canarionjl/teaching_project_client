@@ -5,7 +5,6 @@ import "bootstrap";
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { createPinia } from 'pinia';
 import router from '@/router'
-import { useAuthStore } from "@/store/authCodeStore";
 
 import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default.css'

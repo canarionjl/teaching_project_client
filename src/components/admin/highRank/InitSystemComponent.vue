@@ -38,7 +38,7 @@
 <script lang="ts" setup>
 
 import { ref, Ref } from 'vue'
-import { getReturn, validateInputText } from '@/composables/useAuxFunctions'
+import { getReturn} from '@/composables/useAuxFunctions'
 import SystemService from '@/services/SystemService';
 import SuccessMessageComponent from '@/components/success/SuccessMessageComponent.vue';
 import ErrorMessageComponent from '@/components/error/ErrorMessageComponent.vue';

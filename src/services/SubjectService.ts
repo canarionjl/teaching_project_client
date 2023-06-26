@@ -74,7 +74,7 @@ class SubjectService {
         return subjects
     }
 
-    async createSubject (name: string, degree_id: number, specialty_id: number, course: any, code: number): Promise<string>  {
+    async createSubject (name: string, degree_id: number, specialty_id: number, course: any, code: number, reference: string): Promise<string>  {
 
         const program = this.workspace.program.value
         const anchorWallet = this.workspace.anchorWallet
@@ -91,7 +91,7 @@ class SubjectService {
         const proposalIdHandlerForSubject = await useFindPDAMethods.findPDAforProposalIdGenerator(program.programId, false, code)
         const professorProposalIdHandlerForSubject = await useFindPDAMethods.findPDAforProposalIdGenerator(program.programId, true, code)
     
-        const result = await program.methods.createSubject(name, degree_id, specialty_id, course, code)
+        const result = await program.methods.createSubject(name, degree_id, specialty_id, course, code, reference)
             .accounts({
                 authority: anchorWallet.publicKey,
                 initializationSystemAccount: systemInitialization,
