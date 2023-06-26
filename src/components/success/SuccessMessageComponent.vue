@@ -1,7 +1,11 @@
 <template>
-    <div>
+    
+    <div class="m-2">
+
         <h4>{{ props.msg }}</h4>
+
     </div>
+
 </template>
 
 <script lang="ts" setup>
@@ -23,7 +27,6 @@ h4 {
     color: green;
     font-weight: bold;
     text-align: center;
-    font-style: italic;
 }
 
 </style>

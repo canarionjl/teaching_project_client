@@ -2,7 +2,6 @@ import { useWorkspace } from "@/composables/useWallet";
 import * as useFindPDAMethods from "@/composables/useFindPDAMethods"
 import { fetchProposalAccount, fetchProposalIdAccount, fetchSubjectAccount } from "./FetchAccountService";
 import * as anchor from "@project-serum/anchor";
-import { fetchIdAccount } from "./FetchAccountService"
 
 class ProposalService {
 

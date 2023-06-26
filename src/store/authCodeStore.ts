@@ -1,29 +1,41 @@
 
-
 import { defineStore } from 'pinia';
-import { computed, ref, Ref } from 'vue'
 import CryptoJS from 'crypto-js';
+import { useLocalStorage } from "@vueuse/core"
 
 
-export const useAuthStore = defineStore('authCode', () => {
+export const useAuthStore = defineStore('authCode', {
 
-  const authCode: Ref = ref("0000")
+  state: () => {
 
-  function setAuthCode(code: string) {
+    return {
 
-    if (code != "1111" && code != "2222" && code != "3333") {
-      authCode.value = "0000"
-    } else {
-      authCode.value = code
+      authCode: useLocalStorage('authCode', '0000')
+
     }
-  }
-
-  const hashedAuthCode = computed(
-    () => CryptoJS.SHA256(authCode.value)
     
-  )
+  },
 
-  return { authCode, setAuthCode, hashedAuthCode }
+  getters: {
+
+    hashedAuthCode: (authCode) => CryptoJS.SHA256(authCode)
+
+  },
+
+  actions: {
+
+    setAuthCode(code: string) {
+
+      if (code != "1111" && code != "2222" && code != "3333") {
+        this.authCode = "0000"
+      } else {
+        console.log(code)
+        this.authCode = code
+      }
+
+    }
+
+  }
 
 })
 

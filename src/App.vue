@@ -12,19 +12,18 @@
 
         </div>
 
-        <div class="d-flex flex-row justify-content-lg-end flex-wrap pe-4">
+        <div class="d-flex flex-row justify-content-lg-end align-items-center flex-wrap pe-4">
 
-          <button type="button" id="registerButton" class="btn btn-primary px-3 py-2 me-4">
+          <router-link :to="{ name: 'register' }">
 
-            <i class="bi bi-person-add pe-2"> </i> Registrarse
+            <button type="button" id="registerButton" class="btn btn-primary px-3 py-2 me-4">
 
-          </button>
+              <i class="bi bi-person-add pe-2"> </i> Registrarse
 
-          <button type="button" id="loginButton" class="btn btn-primary px-3 py-2 me-4">
+            </button>
 
-            <i class="bi bi-person-fill pe-2"> </i> Iniciar sesión
+          </router-link>
 
-          </button>
 
           <wallet-multi-button> </wallet-multi-button>
 

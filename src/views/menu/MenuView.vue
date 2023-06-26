@@ -105,7 +105,7 @@
         <div id="admin">
 
             <h2>MI GESTIÓN</h2>
-            <AdminMenuComponent :authCode="authCode" />
+            <AdminMenuComponent :authCode="authCodeRef" />
 
         </div>
 
@@ -125,6 +125,7 @@ import SpecialtyService from "@/services/SpecialtyService";
 import { courseList } from "@/composables/useAuxFunctions"
 import ErrorMessageComponent from "@/components/error/ErrorMessageComponent.vue";
 import { useAuthStore } from "@/store/authCodeStore";
+import { storeToRefs } from "pinia";
 
 const faculty_list: Ref = ref(null);
 const degree_list: Ref = ref(null);
@@ -138,8 +139,14 @@ let selectedCourseId: Ref = ref(0)
 
 let error: Ref = ref(false)
 
-const {authCode} = useAuthStore()
-let authCodeRef: Ref = ref(authCode)
+let authCodeRef: Ref = ref("0000")
+
+const store = useAuthStore()
+
+authCodeRef.value = store.authCode
+
+console.log(authCodeRef.value)
+
 
 onMounted(async () => {
 

@@ -6,6 +6,7 @@ import ProfessorAdminView from '@/views/admin/ProfessorAdminView.vue'
 import SubjectDetailView from '@/views/subjects/SubjectDetailView.vue'
 import CreateProposalView from '@/views/proposals/CreateProposalView.vue'
 import ProposalDetailView from '@/views/proposals/ProposalDetailView.vue'
+import RegisterView from '@/views/register/RegisterView.vue'
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -20,7 +21,7 @@ const routes: Array<RouteRecordRaw> = [
         component: SubjectMasterView
     },
     {
-        path: '/highRankAdmin/:dataType',
+        path: '/highRankAdmin/:dataType/:systemInitialized',
         name: 'highRankAdmin',
         component: HighRankAdminView
     },
@@ -46,6 +47,12 @@ const routes: Array<RouteRecordRaw> = [
         path: '/proposalDetail/:proposal_id/:subject_code',
         name: 'proposalDetail',
         component: ProposalDetailView
+    },
+
+    {
+        path: '/register',
+        name: 'register',
+        component: RegisterView
     }
 ]
 

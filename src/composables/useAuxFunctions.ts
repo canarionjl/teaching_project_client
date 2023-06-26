@@ -139,12 +139,8 @@ export async function getReturn(isBoolean: boolean, isString: boolean, tx: any) 
 
   const { connection } = useWorkspace()
 
-  console.log(connection)
-
   await connection.confirmTransaction(tx.toString())
   const transaction = await connection.getTransaction(tx.toString(), { commitment: "confirmed" });
-
-  console.log(transaction)
 
   const [key, data, buffer] = getReturnLog(transaction)
 
@@ -152,12 +148,10 @@ export async function getReturn(isBoolean: boolean, isString: boolean, tx: any) 
     const reader_U8 = new Borsh.BinaryReader(buffer).readU8;
     return Boolean(reader_U8);
   }
-
   else if (isString) {
     const reader_String = new Borsh.BinaryReader(buffer).readString;
     return String(reader_String);
   }
-
   else {
     return null;
   }

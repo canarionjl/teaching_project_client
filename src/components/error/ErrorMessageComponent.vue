@@ -1,7 +1,11 @@
 <template>
-    <div>
+
+    <div class="m-2">
+
         <h3>{{ props.errorMessage }}</h3>
+
     </div>
+    
 </template>
 
 <script lang="ts" setup>

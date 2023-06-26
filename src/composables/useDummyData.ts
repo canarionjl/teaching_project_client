@@ -104,32 +104,33 @@ const initializeStudent = async (program: Program<TeachingProjectHandler>, autho
     return result;
 }
 
-const initializeSystem = async (program: Program<TeachingProjectHandler>, anchorWallet: any): Promise<string> => {
+// const initializeSystem = async (program: Program<TeachingProjectHandler>, anchorWallet: any): Promise<string> => {
 
-    const initialization_system_account = await useFindPDAMethods.findPDAforSystemInitialization(program.programId)
-    const degree_id_generator_pda = await useFindPDAMethods.findPDAforIdGenerator(program.programId, "degree")
-    const faculty_id_generator_pda = await useFindPDAMethods.findPDAforIdGenerator(program.programId, "faculty")
-    const specialty_id_generator_pda = await useFindPDAMethods.findPDAforIdGenerator(program.programId, "specialty")
-    const subject_id_generator_pda = await useFindPDAMethods.findPDAforIdGenerator(program.programId, "subject")
-    const code_id_relation_account = await useFindPDAMethods.findPDAforCodeIdRelation(program.programId)
-    const high_rank_account = await useFindPDAMethods.findPDAforHighRank(program.programId, anchorWallet)
+//     const initialization_system_account = await useFindPDAMethods.findPDAforSystemInitialization(program.programId)
+//     const degree_id_generator_pda = await useFindPDAMethods.findPDAforIdGenerator(program.programId, "degree")
+//     const faculty_id_generator_pda = await useFindPDAMethods.findPDAforIdGenerator(program.programId, "faculty")
+//     const specialty_id_generator_pda = await useFindPDAMethods.findPDAforIdGenerator(program.programId, "specialty")
+//     const subject_id_generator_pda = await useFindPDAMethods.findPDAforIdGenerator(program.programId, "subject")
+//     const code_id_relation_account = await useFindPDAMethods.findPDAforCodeIdRelation(program.programId)
+//     const high_rank_account = await useFindPDAMethods.findPDAforHighRank(program.programId, anchorWallet)
 
-    const result = await program.methods.initializateNewSystem()
-        .accounts({
-            authority: anchorWallet.publicKey,
-            initializationSystemAccount: initialization_system_account,
-            highRankAccount: high_rank_account,
-            codeIdSubjectRelation: code_id_relation_account,
-            degreeIdHandler: degree_id_generator_pda,
-            facultyIdHandler: faculty_id_generator_pda,
-            specialtyIdHandler: specialty_id_generator_pda,
-            subjectIdHandler: subject_id_generator_pda,
-            systemProgram: anchor.web3.SystemProgram.programId,
-        })
-        .rpc();
 
-    return result;
-}
+//     const result = await program.methods.initializateNewSystem()
+//         .accounts({
+//             authority: anchorWallet.publicKey,
+//             initializationSystemAccount: initialization_system_account,
+//             highRankAccount: high_rank_account,
+//             codeIdSubjectRelation: code_id_relation_account,
+//             degreeIdHandler: degree_id_generator_pda,
+//             facultyIdHandler: faculty_id_generator_pda,
+//             specialtyIdHandler: specialty_id_generator_pda,
+//             subjectIdHandler: subject_id_generator_pda,
+//             systemProgram: anchor.web3.SystemProgram.programId,
+//         })
+//         .rpc();
+
+//     return result;
+// }
 
 const initializeFaculty = async (program: Program<TeachingProjectHandler>, anchorWallet: any, id: number, name: string): Promise<string> => {
 
@@ -202,36 +203,36 @@ const initializeSpecialty = async (program: Program<TeachingProjectHandler>, anc
     return result;
 }
 
-const initializeSubject = async (program: Program<TeachingProjectHandler>, anchorWallet: any, id: number, name: string, degree_id: number, specialty_id: number, course: any, code: number): Promise<string> => {
+// const initializeSubject = async (program: Program<TeachingProjectHandler>, anchorWallet: any, id: number, name: string, degree_id: number, specialty_id: number, course: any, code: number): Promise<string> => {
 
-    const pda = await useFindPDAMethods.findPDAforSubject(program.programId, id)
-    const high_rank_pda = await useFindPDAMethods.findPDAforHighRank(program.programId, anchorWallet)
-    const id_generator_pda = await useFindPDAMethods.findPDAforIdGenerator(program.programId, "subject")
-    const degree_id_generator_pda = await useFindPDAMethods.findPDAforIdGenerator(program.programId, "degree")
-    const specialty_id_generator_pda = await useFindPDAMethods.findPDAforIdGenerator(program.programId, "specialty")
-    const code_id_relation_pda = await useFindPDAMethods.findPDAforCodeIdRelation(program.programId)
-    const systemInitialization = await useFindPDAMethods.findPDAforSystemInitialization(program.programId)
-    const proposalIdHandlerForSubject = await useFindPDAMethods.findPDAforProposalIdGenerator(program.programId, false, code)
-    const professorProposalIdHandlerForSubject = await useFindPDAMethods.findPDAforProposalIdGenerator(program.programId, true, code)
+//     const pda = await useFindPDAMethods.findPDAforSubject(program.programId, id)
+//     const high_rank_pda = await useFindPDAMethods.findPDAforHighRank(program.programId, anchorWallet)
+//     const id_generator_pda = await useFindPDAMethods.findPDAforIdGenerator(program.programId, "subject")
+//     const degree_id_generator_pda = await useFindPDAMethods.findPDAforIdGenerator(program.programId, "degree")
+//     const specialty_id_generator_pda = await useFindPDAMethods.findPDAforIdGenerator(program.programId, "specialty")
+//     const code_id_relation_pda = await useFindPDAMethods.findPDAforCodeIdRelation(program.programId)
+//     const systemInitialization = await useFindPDAMethods.findPDAforSystemInitialization(program.programId)
+//     const proposalIdHandlerForSubject = await useFindPDAMethods.findPDAforProposalIdGenerator(program.programId, false, code)
+//     const professorProposalIdHandlerForSubject = await useFindPDAMethods.findPDAforProposalIdGenerator(program.programId, true, code)
 
-    const result = await program.methods.createSubject(name, degree_id, specialty_id, course, code)
-        .accounts({
-            authority: anchorWallet.publicKey,
-            initializationSystemAccount: systemInitialization,
-            highRank: high_rank_pda,
-            subjectIdHandler: id_generator_pda,
-            degreeIdHandler: degree_id_generator_pda,
-            specialtyIdHandler: specialty_id_generator_pda,
-            subjectAccount: pda,
-            codeIdSubjectRelationAccount: code_id_relation_pda,
-            proposalIdHandler: proposalIdHandlerForSubject,
-            professorProposalIdHandler: professorProposalIdHandlerForSubject,
-            systemProgram: anchor.web3.SystemProgram.programId
-        })
-        .rpc();
+//     const result = await program.methods.createSubject(name, degree_id, specialty_id, course, code)
+//         .accounts({
+//             authority: anchorWallet.publicKey,
+//             initializationSystemAccount: systemInitialization,
+//             highRank: high_rank_pda,
+//             subjectIdHandler: id_generator_pda,
+//             degreeIdHandler: degree_id_generator_pda,
+//             specialtyIdHandler: specialty_id_generator_pda,
+//             subjectAccount: pda,
+//             codeIdSubjectRelationAccount: code_id_relation_pda,
+//             proposalIdHandler: proposalIdHandlerForSubject,
+//             professorProposalIdHandler: professorProposalIdHandlerForSubject,
+//             systemProgram: anchor.web3.SystemProgram.programId
+//         })
+//         .rpc();
 
-    return result;
-}
+//     return result;
+// }
 
 const initializeProposalByStudent = async (program: Program<TeachingProjectHandler>, authority: anchor.web3.Keypair, id: number, title: string, content: string, subject_id: number, professor_proposal_id: number, subject_code: number): Promise<string> => {
 
@@ -324,27 +325,27 @@ const voteProposalByStudent = async (program: Program<TeachingProjectHandler>, a
     return result;
 }
 
-const updateProposalByProfessor = async (program: Program<TeachingProjectHandler>, authority: anchor.web3.Keypair, proposal_id: number, profesor_proposal_id: number, subject_code: number, subject_id: number): Promise<string> => {
+// const updateProposalByProfessor = async (program: Program<TeachingProjectHandler>, authority: anchor.web3.Keypair, proposal_id: number, profesor_proposal_id: number, subject_code: number, subject_id: number): Promise<string> => {
 
-    const professor_account = await useFindPDAMethods.findPDAforProfessor(program.programId, authority.publicKey)
-    const proposal_pda = await useFindPDAMethods.findPDAforProposal(program.programId, proposal_id, subject_code)
-    const professor_proposal_pda = await useFindPDAMethods.findPDAforProfessorProposal(program.programId, profesor_proposal_id, subject_code)
-    const subject_pda = await useFindPDAMethods.findPDAforSubject(program.programId, subject_id)
+//     const professor_account = await useFindPDAMethods.findPDAforProfessor(program.programId, authority.publicKey)
+//     const proposal_pda = await useFindPDAMethods.findPDAforProposal(program.programId, proposal_id, subject_code)
+//     const professor_proposal_pda = await useFindPDAMethods.findPDAforProfessorProposal(program.programId, profesor_proposal_id, subject_code)
+//     const subject_pda = await useFindPDAMethods.findPDAforSubject(program.programId, subject_id)
 
 
-    const result = await program.methods.updateProposalByProfessor()
-        .accounts({
-            authority: authority.publicKey,
-            professorAccount: professor_account,
-            proposalAccount: proposal_pda,
-            professorProposalAccount: professor_proposal_pda,
-            subjectAccount: subject_pda
-        })
-        .signers([authority])
-        .rpc(confirmOptions);
+//     const result = await program.methods.updateProposalByProfessor()
+//         .accounts({
+//             authority: authority.publicKey,
+//             professorAccount: professor_account,
+//             proposalAccount: proposal_pda,
+//             professorProposalAccount: professor_proposal_pda,
+//             subjectAccount: subject_pda
+//         })
+//         .signers([authority])
+//         .rpc(confirmOptions);
 
-    return result;
-}
+//     return result;
+// }
 
 const updateProposalByHighRank = async (program: Program<TeachingProjectHandler>, authority: anchor.web3.Keypair, proposal_id: number, profesor_proposal_id: number, subject_code: number, subject_id: number): Promise<string> => {
 

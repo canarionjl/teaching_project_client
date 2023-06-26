@@ -19,7 +19,3 @@ createApp(App)
     .use(pinia)
     .use(router)
     .mount('#app');
-
-    
-const { setAuthCode } = useAuthStore()
-setAuthCode("2222")

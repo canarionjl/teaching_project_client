@@ -13,6 +13,7 @@
     "@solana/spl-token": "^0.3.7",
     "@solana/wallet-adapter-wallets": "^0.19.16",
     "@solana/web3.js": "^1.77.2",
+    "@vueuse/core": "^10.2.0",
     "bootstrap": "^5.2.3",
     "bootstrap-icons": "^1.10.5",
     "browserify-zlib": "^0.2.0",

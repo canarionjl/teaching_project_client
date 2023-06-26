@@ -79,7 +79,7 @@ class SubjectService {
         const program = this.workspace.program.value
         const anchorWallet = this.workspace.anchorWallet
 
-        const smaller_subject_id_available: number = (await fetchIdAccount(this.workspace.program.value, "subject")).smallerIdAvailable
+        const smaller_subject_id_available = (await fetchIdAccount(this.workspace.program.value, "subject")).smallerIdAvailable
 
         const pda = await useFindPDAMethods.findPDAforSubject(program.programId,smaller_subject_id_available)
         const high_rank_pda = await useFindPDAMethods.findPDAforHighRank(program.programId, anchorWallet)

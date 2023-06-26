@@ -40,7 +40,7 @@
             </select>
 
             <div class="text-center">
-                <button type="submit" class="btn btn-primary btn-lg m-5 p-3" @click="onCreateSpecialtyClicked">Añadir
+                <button type="submit" class="btn btn-primary btn-lg m-5 p-3" @click="onCreateSubjectClicked">Añadir
                     Asignatura</button>
             </div>
         </div>
@@ -108,7 +108,7 @@ const onDegreeChanged = (async () => {
     specialty_list.value = await new SpecialtyService().getAllSpecialtysForDegree(selectedDegreeId.value)
 });
 
-const onCreateSpecialtyClicked = async () => {
+const onCreateSubjectClicked = async () => {
 
     const [nameIsValid, nameErrorMessage] = validateInputText(50, subjectName.value)
     const [facultyIdIsValid, facultyIdErrorMessage] = validateIdSelect(selectedFacultyId.value)
