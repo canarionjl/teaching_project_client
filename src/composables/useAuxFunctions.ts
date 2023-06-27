@@ -1,10 +1,9 @@
-import { TeachingProjectHandler } from "@/program/types/teaching_project_handler";
-import { Program } from "@project-serum/anchor";
+
 import { useWorkspace } from "./useWallet";
-import { countReset } from "console";
 import * as Borsh from 'borsh';
 import { useAuthStore } from "@/store/authCodeStore";
 import UserService from "@/services/UserService";
+import { time } from "console";
 
 
 
@@ -15,8 +14,6 @@ export function numberToLEBytes(param: number): Uint8Array {
   const bytes = new Uint8Array(buffer);
   return bytes;
 }
-
-
 
 
 export const getCourse = async (course: number) => {
@@ -30,6 +27,35 @@ export const getCourse = async (course: number) => {
   const course_object = { [course_lowercase]: {} }
 
   return course_object
+}
+
+export const getStateString = (state: any) => {
+
+  let stateString = "Desconocido"
+  const stateToCompare = JSON.stringify(state)
+
+  switch (stateToCompare) {
+
+    case '{"votationInProgress":{}}':
+      stateString = "Votación en progreso"
+      break
+    case '{"waitingForTeacher":{}}':
+      stateString = "Esperando por actualización de profesores"
+      break
+    case '{"waitingForHighRank":{}}':
+      stateString = "Esperando por validación de un alto cargo"
+      break
+    case '{"accepted":{}}' || '{ "acceptedAndTokensGranted":{}}':
+      stateString = "Aceptada"
+      break
+    case '{"rejected":{}}':
+      stateString = "Rechazada"
+      break
+
+  }
+
+  return stateString
+
 }
 
 export function getCourseIndex(courseObject: any): string {
@@ -147,11 +173,8 @@ export function validateIpfsReference(reference: string) {
     return false
   }
   return true
-  
+
 }
-
-
-
 
 
 const getReturnLog = (confirmedTransaction: any) => {

@@ -20,8 +20,9 @@
 
 
                 </div>
-                
-                <router-link :to="{ name: 'proposalDetail', params: { proposal_id: idRef, subject_code: subjectCode } }">
+
+                <router-link
+                    :to="{ name: 'proposalDetail', params: { proposal_id: idRef, subject_code: subjectCode, readingMode: (!showVotingInfoRef).toString() } }">
                     <button class="btn btn-primary ">Ver propuesta</button>
                 </router-link>
 
@@ -36,6 +37,7 @@
 
 <script lang="ts" setup>
 
+import { read } from 'fs';
 import { defineProps, Ref, ref, onBeforeMount } from 'vue';
 
 const nameRef: Ref = ref(null)
@@ -84,16 +86,17 @@ onBeforeMount(() => {
         const showVotingInfo = Boolean(props.showVotingInfo).valueOf()
         showVotingInfoRef.value = showVotingInfo
 
+
         const votingInfo = Boolean(props.votingInfo).valueOf()
 
-        let value = "aún no"
+        let value = "no"
         let emoji = "❌"
 
         if (votingInfo) {
-            value = "ya"
+            value = ""
             emoji = "✅"
         }
-     
+
         const subject_code = Number(props.subjectCode).valueOf()
         subjectCode.value = subject_code
 

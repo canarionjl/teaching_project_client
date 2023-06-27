@@ -21,9 +21,8 @@ class SystemService {
         const systemAccount = await this.fetchSystemAccount()
         isInitialized = systemAccount.systemIsInitialized
 
-        } catch {
-
-        }
+        } catch {}
+        
         return isInitialized
 
     }

@@ -72,8 +72,8 @@
 
                     <div v-else v-for="(proposal, index) in pendingProposalList" :key="index">
 
-                        <ProposalListComponent :name="proposal.title" :id="proposal.id" :showVotingInfo="false"
-                            :votingInfo="false" :subjectCode="subject.code" />
+                        <ProposalListComponent :name="proposal.title" :id="proposal.id" :showVotingInfo="!readingModeRef"
+                            :votingInfo="userHasVotedTheSelectedProposal(proposal)" :subjectCode="subject.code" />
 
                     </div>
 
@@ -93,8 +93,8 @@
 
                     <div v-else v-for="(proposal, index) in acceptedProposalList" :key="index">
 
-                        <ProposalListComponent :name="proposal.title" :id="proposal.id" :showVotingInfo="false"
-                            :votingInfo="false" :subjectCode="subject.code" />
+                        <ProposalListComponent :name="proposal.title" :id="proposal.id" :showVotingInfo="!readingModeRef"
+                            :votingInfo="userHasVotedTheSelectedProposal(proposal)" :subjectCode="subject.code" />
 
                     </div>
 
@@ -114,8 +114,8 @@
 
                     <div v-else v-for="(proposal, index) in rejectedProposalList" :key="index">
 
-                        <ProposalListComponent :name="proposal.title" :id="proposal.id" :showVotingInfo="false"
-                            :votingInfo="false" :subjectCode="subject.code" />
+                        <ProposalListComponent :name="proposal.title" :id="proposal.id" :showVotingInfo="!readingModeRef"
+                            :votingInfo=userHasVotedTheSelectedProposal(proposal) :subjectCode="subject.code" />
 
                     </div>
 
@@ -143,8 +143,9 @@ import ProposalListComponent from '@/components/proposals/ProposalListComponent.
 import ProposalService from '@/services/ProposalService';
 import FacultyService from '@/services/FacultyService';
 import SpecialtyService from '@/services/SpecialtyService';
-import { getCourseIndex, getArrayLength } from '@/composables/useAuxFunctions';
+import { getCourseIndex, getArrayLength, getUserInfo } from '@/composables/useAuxFunctions';
 import IpfsService from '@/services/IpfsService';
+import { userHasVotedTheProposal } from '@/composables/useProposalFunctions';
 
 let subject: Ref = ref(null)
 let faculty: Ref = ref(null)
@@ -157,6 +158,8 @@ let isLoading: Ref = ref(true)
 let error: Ref = ref(false)
 let errorMessage: Ref = ref("")
 
+let userInfoRef: Ref = ref(null)
+
 let readingModeRef: Ref = ref(true)
 
 onMounted(async () => {
@@ -164,6 +167,8 @@ onMounted(async () => {
     const route = useRoute()
 
     try {
+
+        await getCurrentUserInfo()
 
         const id = Number(route.params.id).valueOf()
 
@@ -180,11 +185,9 @@ onMounted(async () => {
         pendingProposalList.value.push(...votationInProgressProposalList, ...waitingForTeacherProposalList, ...waitingForHighRankProposalList)
 
         const acceptedProposals = await new ProposalService().getProposalForSubjectWithState({ acceptedAndTokensGranted: {} }, subject.value.id, subject.value.code)
-
         acceptedProposalList.value = acceptedProposals
 
         const rejectedProposals = await new ProposalService().getProposalForSubjectWithState({ rejected: {} }, subject.value.id, subject.value.code)
-
         rejectedProposalList.value = rejectedProposals
 
         faculty.value = await new FacultyService().getFacultyWithId(subject.value.id)
@@ -199,11 +202,27 @@ onMounted(async () => {
         error.value = true;
 
     }
+
 })
 
 function onWatchTeachingProjectSystem() {
     new IpfsService().watchTeachingProject(subject.value.teachingProjectReference)
 }
+
+function userHasVotedTheSelectedProposal(proposal: any) {
+
+    while (userInfoRef.value == null);
+
+    return userHasVotedTheProposal(userInfoRef.value, proposal)
+
+}
+
+async function getCurrentUserInfo() {
+
+    userInfoRef.value = await getUserInfo()
+
+}
+
 
 </script>
 
@@ -244,7 +263,7 @@ i {
 
 .noProposalsInfo {
     text-align: center;
-    color:red;
+    color: red;
 }
 
 #subjectData {

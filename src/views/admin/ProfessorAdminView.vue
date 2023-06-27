@@ -1,10 +1,18 @@
 <template>
+    
     <div v-if="page == 0">
         <WatchProfessorSubjects/>
     </div>
+
     <div v-if="page == 1">
         <ProposalMasterComponent/>
     </div>
+
+    <div v-if="page == 2">
+        <ProposalMasterComponent/>
+    </div>
+
+    
 </template>
 
 <script lang="ts" setup>

@@ -7,6 +7,7 @@ import SubjectDetailView from '@/views/subjects/SubjectDetailView.vue'
 import CreateProposalView from '@/views/proposals/CreateProposalView.vue'
 import ProposalDetailView from '@/views/proposals/ProposalDetailView.vue'
 import RegisterView from '@/views/register/RegisterView.vue'
+import LoginView from '@/views/login/LoginView.vue'
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -44,7 +45,7 @@ const routes: Array<RouteRecordRaw> = [
     },
 
     {
-        path: '/proposalDetail/:proposal_id/:subject_code',
+        path: '/proposalDetail/:proposal_id/:subject_code/:readingMode',
         name: 'proposalDetail',
         component: ProposalDetailView
     },
@@ -53,6 +54,12 @@ const routes: Array<RouteRecordRaw> = [
         path: '/register',
         name: 'register',
         component: RegisterView
+    },
+
+    {
+        path: '/login',
+        name: 'login',
+        component: LoginView
     }
 ]
 

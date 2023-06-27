@@ -32,12 +32,15 @@
 
                                 <h4>Fecha de publicación: <b>{{ publishing_date }}</b></h4>
                                 <h4>Fecha de finalización: <b>{{ ending_date }}</b></h4>
+                                <h4>Votos a favor: <b id="supporting" class="p-1">{{ proposal.supportingVotes }}</b></h4>
 
                             </div>
 
                             <div class="d-flex flex-column justify-content-between align-items-start ">
 
-                                <h3>Asignatura: <b>{{ subject.name }}</b></h3>
+                                <h4>Asignatura: <b>{{ subject.name }}</b></h4>
+                                <h4>Estado: <b>{{ current_state}}</b></h4>
+                                <h4>Votos en contra: <b id="against" class="p-1">{{ proposal.againstVotes }}</b></h4>
 
                             </div>
 
@@ -45,21 +48,10 @@
 
                     </div>
 
-                    <div id="buttons" v-show="!userHasVoted">
+                    <div class="m-3" v-if="readingModeRef == false">
 
-                        <div class="d-flex flex-row justify-content-center align-items-center">
-
-                            <button class="btn btn-primary btn-lg m-5 p-3">VOTAR A FAVOR ✅</button>
-                            <button class="btn btn-primary btn-lg m-5 p-3">VOTAR EN CONTRA ❌</button>
-
-                        </div>
-
-                    </div>
-
-                    <div v-show="userHasVoted" id="userHasVoted">
-
-                        <h2>¡Genial! Ya has votado por esta propuesta 😀</h2>
-
+                        <VotingComponent />
+                        
                     </div>
 
                 </div>
@@ -80,14 +72,12 @@
 <script lang="ts" setup>
 
 import SubjectService from '@/services/SubjectService';
-import { onMounted, Ref, ref } from 'vue';
+import { onBeforeMount, Ref, ref } from 'vue';
 import { useRoute } from "vue-router";
 import ProposalService from '@/services/ProposalService';
-import { convertUnixTimestampToDate, getProposalState, getReturn, getUserInfo } from '@/composables/useAuxFunctions';
-import { userHasVotedTheProposal } from '@/composables/useProposalFunctions';
-import { useAuthStore } from '@/store/authCodeStore';
-import { storeToRefs } from 'pinia';
-
+import { convertUnixTimestampToDate, getStateString} from '@/composables/useAuxFunctions';
+import VotingComponent from '@/components/proposals/professor&student/VotingComponent.vue';
+import { useProposalStore } from '@/store/proposalStore';
 
 let proposal: Ref = ref(null)
 let subject: Ref = ref(null)
@@ -95,13 +85,13 @@ let publishing_date: Ref = ref(null)
 let ending_date: Ref = ref(null)
 let current_state: Ref = ref(null)
 
-let userHasVoted: Ref = ref(false)
-
 let isLoading: Ref = ref(true)
 let error: Ref = ref(false)
 let errorMessage: Ref = ref("")
 
-onMounted(async () => {
+let readingModeRef: Ref = ref(true)
+
+onBeforeMount(async () => {
 
     const route = useRoute()
 
@@ -109,11 +99,17 @@ onMounted(async () => {
 
         const proposal_id = Number(route.params.proposal_id).valueOf()
         const subject_code = Number(route.params.subject_code).valueOf()
+        const reading_mode = String(route.params.readingMode).valueOf() 
+
+        readingModeRef.value = reading_mode == 'true'
 
         proposal.value = await new ProposalService().fetchProposalAccountWithId(proposal_id, subject_code)
         subject.value = await new SubjectService().fetchSubjectAccountWithId(proposal.value.subjectId)
-        userHasVoted.value = userHasVotedTheProposal(await getUserInfo(), proposal.value)
 
+        const store = useProposalStore()
+        store.setProposal(proposal.value)
+        store.setSubject(subject.value)
+   
         isLoading.value = false;
 
     } catch {
@@ -125,70 +121,19 @@ onMounted(async () => {
     }
 
     setProposalData()
-
 })
+
 
 
 function setProposalData() {
 
     publishing_date.value = convertUnixTimestampToDate(proposal.value.publishingTimestamp)
     ending_date.value = convertUnixTimestampToDate(proposal.value.endingTimestamp)
-    current_state.value = getProposalState(proposal.value.state)
+    current_state.value = getStateString(proposal.value.state)
 
 }
 
-async function voteProposal(vote: boolean): Promise<string> {
 
-    let tx = "";
-
-    const store = useAuthStore()
-    const { hashedAuthCode } = storeToRefs(store)
-
-    if (hashedAuthCode.value.toString() == "edee29f882543b956620b26d0ee0e7e950399b1c4222f5de05e06425b4c995e9") {
-
-        tx = await new ProposalService().voteProposalByProfessor(
-            proposal.value.id, subject.value.id,
-            proposal.value.associatedProfessorProposalId,
-            vote,
-            subject.value.code
-        )
-
-    }
-    else if (hashedAuthCode.value.toString() == "318aee3fed8c9d040d35a7fc1fa776fb31303833aa2de885354ddf3d44d8fb69") {
-
-        tx = await new ProposalService().voteProposalByStudent(
-            proposal.value.id, subject.value.id,
-            proposal.value.associatedProfessorProposalId,
-            vote,
-            subject.value.code
-        )
-
-    }
-
-
-    return tx;
-}
-
-async function onVoteButtonClicked(vote: boolean) {
-
-    const tx = await voteProposal(vote)
-
-    if (tx != "") {
-        const log = await getReturn(true, false, tx)
-        if (log == true) {
-            userHasVoted.value = true
-        }
-    }
-
-    else {
-
-        error.value = true
-        errorMessage.value = "Para votar debe estar registrado como profesor o estudiante y matriculado en la asignatura" +
-        "Si cumple con estos requisitos, vuelva a intentarlo más tarde"
-
-    }
-
-}
 
 </script>
 
@@ -222,6 +167,17 @@ b {
     font-weight: bold;
 }
 
+#supporting {
+    color: rgb(46, 188, 46);
+    font-size: 27px;
+    font-weight: bolder;
+}
+
+#against {
+    color: red;
+    font-size: 27px;
+    font-weight: bolder;
+}
 
 #proposalData {
     background-color: white;
@@ -239,14 +195,6 @@ b {
 
     text-align:center;
 }
-
-#userHasVoted {
-    padding: 35px;
-    text-align: center;
-    color: green;
-    font-weight: bold;
-}
-
 .btn-primary {
     background-color: $primary !important;
     border: $primary !important;

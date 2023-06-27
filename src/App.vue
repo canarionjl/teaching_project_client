@@ -14,6 +14,16 @@
 
         <div class="d-flex flex-row justify-content-lg-end align-items-center flex-wrap pe-4">
 
+          <router-link :to="{ name: 'login' }">
+
+            <button type="button" id="loginButton" class="btn btn-primary px-3 py-2 me-4">
+
+              <i class="bi bi-person-fill pe-2"> </i> Iniciar Sesión
+
+            </button>
+
+          </router-link>
+
           <router-link :to="{ name: 'register' }">
 
             <button type="button" id="registerButton" class="btn btn-primary px-3 py-2 me-4">

@@ -38,7 +38,7 @@
 <script lang="ts" setup>
 
 import { ref, Ref } from 'vue'
-import { getReturn} from '@/composables/useAuxFunctions'
+import { getReturn } from '@/composables/useAuxFunctions'
 import SystemService from '@/services/SystemService';
 import SuccessMessageComponent from '@/components/success/SuccessMessageComponent.vue';
 import ErrorMessageComponent from '@/components/error/ErrorMessageComponent.vue';
@@ -49,7 +49,7 @@ let successRef: Ref = ref(null)
 const onInitSystemClicked = async () => {
 
     let result = ""
-    let log;
+    let log
 
     try {
         result = await new SystemService().initializeSystem()
@@ -114,4 +114,5 @@ small {
     padding-left: 3px;
     color: red;
     font-weight: bold;
-}</style>
+}
+</style>
