@@ -1,5 +1,5 @@
 <template>
-    <div id="buttons" v-if=" userHasVoted == false ">
+    <div id="buttons" v-if="userHasVoted == false">
 
         <div class="d-flex flex-row justify-content-center align-items-center">
 
@@ -10,17 +10,16 @@
 
     </div>
 
-    <div v-if=" userHasVoted == true " class="m-5">
+    <div v-if="userHasVoted == true" class="m-5">
 
         <SuccessMessageComponent msg="¡Genial! Ya has votado por esta propuesta 😀" />
 
     </div>
-
 </template>
 
 <script lang="ts" setup>
 
-import { Ref, ref, onBeforeMount, onMounted } from 'vue'
+import { Ref, ref, onBeforeMount, onMounted, defineEmits } from 'vue'
 import { useAuthStore } from '@/store/authCodeStore'
 import { useProposalStore } from '@/store/proposalStore'
 import ProposalService from '@/services/ProposalService';
@@ -31,6 +30,9 @@ import SuccessMessageComponent from '@/components/success/SuccessMessageComponen
 let userHasVoted: Ref = ref(null)
 let proposal: Ref = ref(null)
 let subject: Ref = ref(null)
+
+
+const emit = defineEmits(['resultInfoEmit'])
 
 
 onBeforeMount(async () => {
@@ -44,9 +46,10 @@ onBeforeMount(async () => {
 onMounted(async () => {
 
     try {
-  
-        userHasVoted.value  = userHasVotedTheProposal(await getUserInfo(), proposal.value)
-  
+
+        userHasVoted.value = userHasVotedTheProposal(await getUserInfo(), proposal.value)
+        console.log("USER HAS VOTED: ", userHasVoted.value)
+
     } catch {
 
         userHasVoted.value = null
@@ -89,22 +92,29 @@ async function voteProposal(vote: boolean): Promise<string> {
 
 async function onVoteButtonClicked(vote: boolean) {
 
+    let data
     const tx = await voteProposal(vote)
 
     if (tx != "") {
+
         const log = await getReturn(true, false, tx)
+
         if (log == true) {
+
             userHasVoted.value = true
+            data = { isOk: true, resultMessage: "Se ha registrado su voto correctamente." }
+
         }
+
     }
 
     else {
 
-        // error.value = true
-        // errorMessage.value = "Para votar debe estar registrado como profesor o estudiante y matriculado en la asignatura" +
-        // "Si cumple con estos requisitos, vuelva a intentarlo más tarde"
+        data = { isOk: false, resultMessage: "No se ha podido registrar su voto. Inténtelo de nuevo más tarde." }
 
     }
+
+    emit('resultInfoEmit', data)
 
 }
 

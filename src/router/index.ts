@@ -45,7 +45,7 @@ const routes: Array<RouteRecordRaw> = [
     },
 
     {
-        path: '/proposalDetail/:proposal_id/:subject_code/:readingMode',
+        path: '/proposalDetail/:proposal_id/:subject_code/:readingMode/:proposalState',
         name: 'proposalDetail',
         component: ProposalDetailView
     },

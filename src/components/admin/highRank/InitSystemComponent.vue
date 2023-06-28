@@ -48,12 +48,14 @@ let successRef: Ref = ref(null)
 
 const onInitSystemClicked = async () => {
 
-    let result = ""
+    let result
     let log
 
     try {
         result = await new SystemService().initializeSystem()
-    } catch { }
+    } catch (err) {
+        result = ""
+     }
 
     if (result != "") {
         log = await getReturn(true, false, result)

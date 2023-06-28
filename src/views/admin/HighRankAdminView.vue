@@ -17,6 +17,10 @@
             <CreateSubjectComponent />
         </div>
 
+        <div v-else-if="page == 4">
+            <HighRankProposalMasterComponent :proposalState=2 />
+        </div>
+
     </div>
 
     <div v-if="!systemIsInitializedRef">
@@ -36,8 +40,10 @@ import CreateDegreeComponent from "@/components/admin/highRank/CreateDegreeCompo
 import CreateSpecialtyComponent from "@/components/admin/highRank/CreateSpecialtyComponent.vue"
 import CreateSubjectComponent from "@/components/admin/highRank/CreateSubjectComponent.vue"
 import InitSystemComponent from "@/components/admin/highRank/InitSystemComponent.vue"
+import HighRankProposalMasterComponent from "@/components/admin/highRank/HighRankProposalMasterComponent.vue"
 import { useRoute } from "vue-router";
 import { ref, Ref, onBeforeMount } from 'vue'
+
 
 let page: Ref = ref(null)
 let systemIsInitializedRef: Ref = ref(false)

@@ -14,7 +14,7 @@
                 <div class="d-flex flex-row justify-content-start align-items-center col-9">
 
                     <h4>{{ nameRef }}</h4>
-                    <h6 class="px-2" v-show="showVotingInfoRef" id="votingInfo">(<i>{{ votingInfoRef }} has votado esta
+                    <h6 class="px-2" v-show="showVotingInfoRef && props.proposalState < 2" id="votingInfo">(<i>{{ votingInfoRef }} has votado esta
                             propuesta</i> {{ emojiVotingInfoRef }})
                     </h6>
 
@@ -22,7 +22,7 @@
                 </div>
 
                 <router-link
-                    :to="{ name: 'proposalDetail', params: { proposal_id: idRef, subject_code: subjectCode, readingMode: (!showVotingInfoRef).toString() } }">
+                    :to="{ name: 'proposalDetail', params: { proposal_id: idRef, subject_code: subjectCode, readingMode: (!showVotingInfoRef).toString(), proposalState: (props.proposalState).toString() } }">
                     <button class="btn btn-primary ">Ver propuesta</button>
                 </router-link>
 
@@ -37,7 +37,6 @@
 
 <script lang="ts" setup>
 
-import { read } from 'fs';
 import { defineProps, Ref, ref, onBeforeMount } from 'vue';
 
 const nameRef: Ref = ref(null)
@@ -69,6 +68,10 @@ const props = defineProps({
         required: true
     },
     subjectCode: {
+        type: Number,
+        required: true
+    },
+    proposalState: {
         type: Number,
         required: true
     }
@@ -107,7 +110,7 @@ onBeforeMount(() => {
 
     } catch {
 
-        errorMessage.value = "No se ha podido recuperar la información de la asignatura"
+        errorMessage.value = "No se ha podido recuperar la información de las propuestas pendientes"
         isLoading.value = false;
         error.value = true;
 

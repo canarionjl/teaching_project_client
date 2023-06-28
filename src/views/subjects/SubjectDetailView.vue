@@ -73,7 +73,8 @@
                     <div v-else v-for="(proposal, index) in pendingProposalList" :key="index">
 
                         <ProposalListComponent :name="proposal.title" :id="proposal.id" :showVotingInfo="!readingModeRef"
-                            :votingInfo="userHasVotedTheSelectedProposal(proposal)" :subjectCode="subject.code" />
+                            :votingInfo="userHasVotedTheSelectedProposal(proposal)" :subjectCode="subject.code"
+                            :proposalState="evaluateProposalState(proposal)" />
 
                     </div>
 
@@ -94,7 +95,8 @@
                     <div v-else v-for="(proposal, index) in acceptedProposalList" :key="index">
 
                         <ProposalListComponent :name="proposal.title" :id="proposal.id" :showVotingInfo="!readingModeRef"
-                            :votingInfo="userHasVotedTheSelectedProposal(proposal)" :subjectCode="subject.code" />
+                            :votingInfo="userHasVotedTheSelectedProposal(proposal)" :subjectCode="subject.code"
+                            :proposalState="-1" />
 
                     </div>
 
@@ -115,7 +117,8 @@
                     <div v-else v-for="(proposal, index) in rejectedProposalList" :key="index">
 
                         <ProposalListComponent :name="proposal.title" :id="proposal.id" :showVotingInfo="!readingModeRef"
-                            :votingInfo=userHasVotedTheSelectedProposal(proposal) :subjectCode="subject.code" />
+                            :votingInfo=userHasVotedTheSelectedProposal(proposal) :subjectCode="subject.code"
+                            :proposalState="-1" />
 
                     </div>
 
@@ -143,7 +146,7 @@ import ProposalListComponent from '@/components/proposals/ProposalListComponent.
 import ProposalService from '@/services/ProposalService';
 import FacultyService from '@/services/FacultyService';
 import SpecialtyService from '@/services/SpecialtyService';
-import { getCourseIndex, getArrayLength, getUserInfo } from '@/composables/useAuxFunctions';
+import { getCourseIndex, getArrayLength, getUserInfo, compareValueOfObjects } from '@/composables/useAuxFunctions';
 import IpfsService from '@/services/IpfsService';
 import { userHasVotedTheProposal } from '@/composables/useProposalFunctions';
 
@@ -175,19 +178,21 @@ onMounted(async () => {
         const readingMode = String(route.params.readingMode).valueOf() == 'true'
         readingModeRef.value = readingMode
 
+        console.log("Reading Mode from subject detail: ", readingMode)
+
         subject.value = await new SubjectService().fetchSubjectAccountWithId(id)
 
-        const votationInProgressProposalList = await new ProposalService().getProposalForSubjectWithState({ votationInProgress: {} }, subject.value.id, subject.value.code)
-        const waitingForTeacherProposalList = await new ProposalService().getProposalForSubjectWithState({ waitingForTeacher: {} }, subject.value.id, subject.value.code)
-        const waitingForHighRankProposalList = await new ProposalService().getProposalForSubjectWithState({ waitingForHighRank: {} }, subject.value.id, subject.value.code)
+        const votationInProgressProposalList = await new ProposalService().getProposalForSubjectWithState({ votationInProgress: {} }, subject.value.code)
+        const waitingForTeacherProposalList = await new ProposalService().getProposalForSubjectWithState({ waitingForTeacher: {} }, subject.value.code)
+        const waitingForHighRankProposalList = await new ProposalService().getProposalForSubjectWithState({ waitingForHighRank: {} }, subject.value.code)
 
         pendingProposalList.value = []
         pendingProposalList.value.push(...votationInProgressProposalList, ...waitingForTeacherProposalList, ...waitingForHighRankProposalList)
 
-        const acceptedProposals = await new ProposalService().getProposalForSubjectWithState({ acceptedAndTokensGranted: {} }, subject.value.id, subject.value.code)
+        const acceptedProposals = await new ProposalService().getProposalForSubjectWithState({ acceptedAndTokensGranted: {} }, subject.value.code)
         acceptedProposalList.value = acceptedProposals
 
-        const rejectedProposals = await new ProposalService().getProposalForSubjectWithState({ rejected: {} }, subject.value.id, subject.value.code)
+        const rejectedProposals = await new ProposalService().getProposalForSubjectWithState({ rejected: {} }, subject.value.code)
         rejectedProposalList.value = rejectedProposals
 
         faculty.value = await new FacultyService().getFacultyWithId(subject.value.id)
@@ -220,6 +225,19 @@ function userHasVotedTheSelectedProposal(proposal: any) {
 async function getCurrentUserInfo() {
 
     userInfoRef.value = await getUserInfo()
+
+}
+
+function evaluateProposalState(proposal: any) {
+
+    let states = [{ votationInProgress: {} }, { waitingForTeacher: {} }, { waitingForHighRank: {} }]
+
+    for (let i = 0; i < states.length; i++) {
+        console.log("Comparison between: ", states[i], " ", proposal.state, " --> ", compareValueOfObjects(states[i], proposal.state), " en índice: ",i)
+        if (compareValueOfObjects(states[i], proposal.state)) return i
+    }
+
+    return -1
 
 }
 

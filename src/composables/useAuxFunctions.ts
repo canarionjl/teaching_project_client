@@ -218,7 +218,6 @@ export function getArrayLength(array: []) {
 }
 
 
-
 export function convertUnixTimestampToDate(unixTimestamp: number): string {
 
   const date = new Date(unixTimestamp * 1000);
@@ -260,6 +259,12 @@ export async function getUserInfo(): Promise<[boolean, any]> {
   }
 
   return [false, null];
+
+}
+
+export function compareValueOfObjects(obj1: any, obj2: any) {
+
+  return JSON.stringify(obj1) == JSON.stringify(obj2)
 
 }
 

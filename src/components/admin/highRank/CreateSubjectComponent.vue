@@ -45,7 +45,7 @@
                 </select>
 
                 <div class="mt-4">
-                    <label for="inputFile" id="inputLabel" class="form-label mx-2">Incluya el proyecto docente actual de la
+                    <label for="inputFile" id="inputLabel" accept="application/pdf" class="form-label mx-2">Incluya el proyecto docente actual de la
                         asignatura</label>
                     <input class="form-control" type="file" id="inputFile" ref="fileRef">
                     <small v-if="fileIsValidRef == false"> {{ fileInputErrorMessageRef }}</small>
@@ -192,6 +192,7 @@ const onCreateSubjectClicked = async () => {
 </script>
 D
 <style lang="scss" scoped>
+
 #component {
     font-family: 'DM Sans', 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
@@ -210,4 +211,5 @@ small {
 .defaultOption {
     display: none;
 }
+
 </style>

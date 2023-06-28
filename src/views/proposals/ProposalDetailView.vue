@@ -39,7 +39,7 @@
                             <div class="d-flex flex-column justify-content-between align-items-start ">
 
                                 <h4>Asignatura: <b>{{ subject.name }}</b></h4>
-                                <h4>Estado: <b>{{ current_state}}</b></h4>
+                                <h4>Estado: <b>{{ current_state }}</b></h4>
                                 <h4>Votos en contra: <b id="against" class="p-1">{{ proposal.againstVotes }}</b></h4>
 
                             </div>
@@ -50,9 +50,38 @@
 
                     <div class="m-3" v-if="readingModeRef == false">
 
-                        <VotingComponent />
-                        
+                        <div v-if="proposalStateRef == 0">
+
+                            <VotingComponent @resultInfoEmit="setResultInfo" />
+
+                        </div>
+
+                        <div v-if="proposalStateRef == 1">
+
+                            <UpdateTeachingProjectComponent @resultInfoEmit="setResultInfo" />
+
+                        </div>
+
+                        <div v-if="proposalStateRef == 2">
+                    
+                            <ValidateProposalComponent @resultInfoEmit="setResultInfo" />
+
+                        </div>
+
                     </div>
+
+                    <div v-if="resultRef == true">
+
+                        <SuccessMessageComponent :msg="resultMessageRef" />
+
+                    </div>
+
+                    <div v-if="resultRef == false">
+
+                        <ErrorMessageComponent :errorMessage="resultMessageRef" />
+
+                    </div>
+
 
                 </div>
 
@@ -75,9 +104,14 @@ import SubjectService from '@/services/SubjectService';
 import { onBeforeMount, Ref, ref } from 'vue';
 import { useRoute } from "vue-router";
 import ProposalService from '@/services/ProposalService';
-import { convertUnixTimestampToDate, getStateString} from '@/composables/useAuxFunctions';
+import { convertUnixTimestampToDate, getStateString } from '@/composables/useAuxFunctions';
 import VotingComponent from '@/components/proposals/professor&student/VotingComponent.vue';
+import UpdateTeachingProjectComponent from '@/components/proposals/professor&student/UpdateTeachingProjectComponent.vue'
 import { useProposalStore } from '@/store/proposalStore';
+import ErrorMessageComponent from '@/components/error/ErrorMessageComponent.vue';
+import SuccessMessageComponent from '@/components/success/SuccessMessageComponent.vue';
+import ValidateProposalComponent from '@/components/proposals/highRank/ValidateProposalComponent.vue';
+import { useAuthStore } from '@/store/authCodeStore';
 
 let proposal: Ref = ref(null)
 let subject: Ref = ref(null)
@@ -90,6 +124,10 @@ let error: Ref = ref(false)
 let errorMessage: Ref = ref("")
 
 let readingModeRef: Ref = ref(true)
+let proposalStateRef: Ref = ref(false)
+
+let resultRef: Ref = ref(null)
+let resultMessageRef: Ref = ref("")
 
 onBeforeMount(async () => {
 
@@ -99,9 +137,17 @@ onBeforeMount(async () => {
 
         const proposal_id = Number(route.params.proposal_id).valueOf()
         const subject_code = Number(route.params.subject_code).valueOf()
-        const reading_mode = String(route.params.readingMode).valueOf() 
+        const reading_mode = String(route.params.readingMode).valueOf()
+        const proposalState = Number(route.params.proposalState).valueOf()
 
         readingModeRef.value = reading_mode == 'true'
+        proposalStateRef.value = proposalState
+
+        const authStore = useAuthStore()
+
+        if (proposalState == 2 && authStore.hashedAuthCode != "0ffe1abd1a08215353c233d6e009613e95eec4253832a761af28ff37ac5a150c") {
+            throw new Error("User is not a highRank")
+        }
 
         proposal.value = await new ProposalService().fetchProposalAccountWithId(proposal_id, subject_code)
         subject.value = await new SubjectService().fetchSubjectAccountWithId(proposal.value.subjectId)
@@ -109,7 +155,7 @@ onBeforeMount(async () => {
         const store = useProposalStore()
         store.setProposal(proposal.value)
         store.setSubject(subject.value)
-   
+
         isLoading.value = false;
 
     } catch {
@@ -134,6 +180,12 @@ function setProposalData() {
 }
 
 
+function setResultInfo(data: any) {
+
+    resultRef.value = data.isOk
+    resultMessageRef.value = data.resultMessage
+
+}
 
 </script>
 
@@ -195,6 +247,7 @@ b {
 
     text-align:center;
 }
+
 .btn-primary {
     background-color: $primary !important;
     border: $primary !important;

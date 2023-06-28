@@ -15,13 +15,15 @@ class SystemService {
 
     async systemIsInitialized() {
 
-        let isInitialized = false
+        let isInitialized
 
         try {
         const systemAccount = await this.fetchSystemAccount()
         isInitialized = systemAccount.systemIsInitialized
 
-        } catch {}
+        } catch {
+            isInitialized = false
+        }
         
         return isInitialized
 

@@ -1,7 +1,8 @@
 import { useWorkspace } from "@/composables/useWallet";
 import * as useFindPDAMethods from "@/composables/useFindPDAMethods"
-import { fetchProposalAccount, fetchProposalIdAccount, fetchSubjectAccount } from "./FetchAccountService";
+import { fetchIdAccount, fetchProposalAccount, fetchProposalIdAccount, fetchSubjectAccount } from "./FetchAccountService";
 import * as anchor from "@project-serum/anchor";
+import { TOKEN_PROGRAM_ID, ASSOCIATED_TOKEN_PROGRAM_ID, getAssociatedTokenAddress, getAccount } from "@solana/spl-token";
 
 class ProposalService {
 
@@ -95,7 +96,7 @@ class ProposalService {
         return result;
     }
 
-    async getProposalForSubjectWithState(state: any, id: number, code: number) {
+    async getProposalForSubjectWithState(state: any, code: number) {
 
         const program = this.workspace.program.value
 
@@ -120,7 +121,7 @@ class ProposalService {
 
         for (let i = 0; i < subjects.length; i++) {
 
-            const proposalForSubject = await this.getProposalForSubjectWithState(state, subjects[i].id, subjects[i].code)
+            const proposalForSubject = await this.getProposalForSubjectWithState(state, subjects[i].code)
             const subject_proposal_tuple = [subjects[i].name, subjects[i].code, proposalForSubject]
             proposals.push(subject_proposal_tuple)
 
@@ -128,11 +129,32 @@ class ProposalService {
         return proposals
     }
 
+    async getProposalsForHighRank() {
+
+        const program = this.workspace.program.value
+
+        const proposalsForHighRank = [];
+        const smaller_subject_id_available = (await fetchIdAccount(this.workspace.program.value, "subject")).smallerIdAvailable
+
+        for (let i = 1; i < smaller_subject_id_available; i++) {
+
+            const subject = await fetchSubjectAccount(program, i)
+
+            const proposalForSubject = await this.getProposalForSubjectWithState({ waitingForHighRank: {} }, subject.code)
+            const subject_proposal_tuple = [subject.name, subject.code, proposalForSubject]
+            proposalsForHighRank.push(subject_proposal_tuple)
+
+        }
+
+        return proposalsForHighRank
+
+    }
+
     async fetchProposalAccountWithId(id: number, subject_code: number) {
         return await fetchProposalAccount(this.workspace.program.value, id, subject_code)
     }
 
-    async voteProposalByStudent (proposal_id: number, subject_id: number, profesor_proposal_id: number, vote: boolean, subject_code: number): Promise<string> {
+    async voteProposalByStudent(proposal_id: number, subject_id: number, profesor_proposal_id: number, vote: boolean, subject_code: number): Promise<string> {
 
         const program = this.workspace.program.value
         const anchorWallet = this.workspace.anchorWallet
@@ -143,7 +165,7 @@ class ProposalService {
         const proposal_pda = await useFindPDAMethods.findPDAforProposal(program.programId, proposal_id, subject_code)
         const id_professor_generator_pda = await useFindPDAMethods.findPDAforProposalIdGenerator(program.programId, true, subject_code)
         const professor_proposal_pda = await useFindPDAMethods.findPDAforProfessorProposal(program.programId, profesor_proposal_id, subject_code)
-    
+
         const result = await program.methods.voteProposalByStudent(vote)
             .accounts({
                 authority: anchorWallet.publicKey,
@@ -154,13 +176,13 @@ class ProposalService {
                 professorProposalIdHandler: id_professor_generator_pda,
                 professorProposalAccount: professor_proposal_pda
             })
-    
+
             .rpc();
-    
+
         return result;
     }
 
-    async voteProposalByProfessor (proposal_id: number, subject_id: number, profesor_proposal_id: number, vote: boolean, subject_code: number): Promise<string> {
+    async voteProposalByProfessor(proposal_id: number, subject_id: number, profesor_proposal_id: number, vote: boolean, subject_code: number): Promise<string> {
 
         const program = this.workspace.program.value
         const anchorWallet = this.workspace.anchorWallet
@@ -171,7 +193,7 @@ class ProposalService {
         const proposal_pda = await useFindPDAMethods.findPDAforProposal(program.programId, proposal_id, subject_code)
         const id_professor_generator_pda = await useFindPDAMethods.findPDAforProposalIdGenerator(program.programId, true, subject_code)
         const professor_proposal_pda = await useFindPDAMethods.findPDAforProfessorProposal(program.programId, profesor_proposal_id, subject_code)
-    
+
         const result = await program.methods.voteProposalByProfessor(vote)
             .accounts({
                 authority: anchorWallet.publicKey,
@@ -183,10 +205,130 @@ class ProposalService {
                 professorProposalAccount: professor_proposal_pda
             })
             .rpc();
-    
+
         return result;
     }
 
+    async updateProposalByProfessor(proposal_id: number, profesor_proposal_id: number, subject_code: number, subject_id: number, reference: string): Promise<string> {
+
+        const program = this.workspace.program.value
+        const anchorWallet = this.workspace.anchorWallet
+
+        const professor_account = await useFindPDAMethods.findPDAforProfessor(program.programId, anchorWallet)
+        const proposal_pda = await useFindPDAMethods.findPDAforProposal(program.programId, proposal_id, subject_code)
+        const professor_proposal_pda = await useFindPDAMethods.findPDAforProfessorProposal(program.programId, profesor_proposal_id, subject_code)
+        const subject_pda = await useFindPDAMethods.findPDAforSubject(program.programId, subject_id)
+
+
+        const result = await program.methods.updateProposalByProfessor(reference)
+            .accounts({
+                authority: anchorWallet.publicKey,
+                professorAccount: professor_account,
+                proposalAccount: proposal_pda,
+                professorProposalAccount: professor_proposal_pda,
+                subjectAccount: subject_pda
+            })
+            .rpc();
+
+        return result;
+    }
+
+    async updateProposalByHighRank(proposal_id: number, profesor_proposal_id: number, subject_code: number, subject_id: number, vote: boolean): Promise<string> {
+
+        const program = this.workspace.program.value
+        const anchorWallet = this.workspace.anchorWallet
+
+        const high_rank_account = await useFindPDAMethods.findPDAforHighRank(program.programId, anchorWallet)
+        const proposal_pda = await useFindPDAMethods.findPDAforProposal(program.programId, proposal_id, subject_code)
+        const professor_proposal_pda = await useFindPDAMethods.findPDAforProfessorProposal(program.programId, profesor_proposal_id, subject_code)
+        const subject_pda = await useFindPDAMethods.findPDAforSubject(program.programId, subject_id)
+
+        const result = await program.methods.updateProposalByHighRank(vote)
+            .accounts({
+                authority: anchorWallet.publicKey,
+                highRankAccount: high_rank_account,
+                proposalAccount: proposal_pda,
+                professorProposalAccount: professor_proposal_pda,
+                subjectAccount: subject_pda
+            })
+            .rpc();
+
+        return result;
+    }
+
+    async giveCreditToStudent(proposal_id: number, student_creator_public_key: anchor.web3.PublicKey, identifier_code: string, subject_code: number): Promise<string> {
+
+        const program = this.workspace.program.value
+        const anchorWallet = this.workspace.anchorWallet
+
+        const high_rank_account = await useFindPDAMethods.findPDAforHighRank(program.programId, anchorWallet)
+        const proposal_account_pda = await useFindPDAMethods.findPDAforProposal(program.programId, proposal_id, subject_code)
+        const creator_account_pda = await useFindPDAMethods.findPDAforStudent(program.programId, student_creator_public_key)
+        const mint = await useFindPDAMethods.findPDAforMint(program.programId)
+        const [pda, bump] = await useFindPDAMethods.findPDAforMintAuthority(program.programId, mint, identifier_code)
+
+        let mintAuthority: { pda: anchor.web3.PublicKey, bump: number };
+        mintAuthority = { pda: pda, bump: bump };
+
+        const associatedTokenAccount = await getAssociatedTokenAddress(mint, student_creator_public_key, false);
+
+        const result = await program.methods.giveCreditsToWinningStudent(identifier_code, subject_code, mintAuthority.bump)
+            .accounts({
+                authority: anchorWallet.publicKey,
+                highRankAccount: high_rank_account,
+                proposalAccount: proposal_account_pda,
+                creatorAccount: creator_account_pda,
+                tokenAccount: associatedTokenAccount,
+                mintAuthorityAccount: mintAuthority.pda,
+                mint: mint,
+                tokenProgram: TOKEN_PROGRAM_ID,
+                systemProgram: anchor.web3.SystemProgram.programId,
+                associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
+                rent: anchor.web3.SYSVAR_RENT_PUBKEY,
+
+            })
+            .rpc();
+
+        return result;
+
+    }
+
+
+    async giveCreditToProfessor(proposal_id: number, student_creator_public_key: anchor.web3.PublicKey, identifier_code: string, subject_code: number): Promise<string> {
+
+        const program = this.workspace.program.value
+        const anchorWallet = this.workspace.anchorWallet
+
+        const high_rank_account = await useFindPDAMethods.findPDAforHighRank(program.programId, anchorWallet)
+        const proposal_account_pda = await useFindPDAMethods.findPDAforProposal(program.programId, proposal_id, subject_code)
+        const creator_account_pda = await useFindPDAMethods.findPDAforProfessor(program.programId, student_creator_public_key)
+        const mint = await useFindPDAMethods.findPDAforMint(program.programId)
+        const [pda, bump] = await useFindPDAMethods.findPDAforMintAuthority(program.programId, mint, identifier_code)
+
+        let mintAuthority: { pda: anchor.web3.PublicKey, bump: number };
+        mintAuthority = { pda: pda, bump: bump };
+
+        const associatedTokenAccount = await getAssociatedTokenAddress(mint, student_creator_public_key, false);
+
+        const result = await program.methods.giveCreditsToWinningProfessor(identifier_code, subject_code, mintAuthority.bump)
+            .accounts({
+                authority: anchorWallet.publicKey,
+                highRankAccount: high_rank_account,
+                proposalAccount: proposal_account_pda,
+                creatorAccount: creator_account_pda,
+                tokenAccount: associatedTokenAccount,
+                mintAuthorityAccount: mintAuthority.pda,
+                mint: mint,
+                tokenProgram: TOKEN_PROGRAM_ID,
+                systemProgram: anchor.web3.SystemProgram.programId,
+                associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
+                rent: anchor.web3.SYSVAR_RENT_PUBKEY,
+            })
+            .rpc();
+
+        return result;
+
+    }
 }
 
 export default ProposalService

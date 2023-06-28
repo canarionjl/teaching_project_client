@@ -5,11 +5,11 @@
     </div>
 
     <div v-if="page == 1">
-        <ProposalMasterComponent/>
+        <ProposalMasterComponent :proposalState="0"/>
     </div>
 
     <div v-if="page == 2">
-        <ProposalMasterComponent/>
+        <ProposalMasterComponent :proposalState="1"/>
     </div>
 
     
