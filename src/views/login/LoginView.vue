@@ -26,7 +26,7 @@
             </div>
 
             <div class="m-3">
-                <button class="btn btn-primary p-3" @click="onRegisterButtonClicked">Iniciar Sesión</button>
+                <button class="btn btn-primary p-3" @click="onLoginButtonClicked">Iniciar Sesión</button>
             </div>
 
 
@@ -49,7 +49,7 @@
 
 <script lang="ts" setup>
 
-import { Ref, ref} from 'vue'
+import { Ref, ref } from 'vue'
 import ErrorMessageComponent from '@/components/error/ErrorMessageComponent.vue';
 import SuccessMessageComponent from '@/components/success/SuccessMessageComponent.vue';
 import { useWorkspace } from "@/composables/useWallet";
@@ -62,7 +62,7 @@ let error: Ref = ref(false)
 let errorMessage: Ref = ref("")
 let profileInitializedProperly: Ref = ref(false)
 
-async function onRegisterButtonClicked() {
+async function onLoginButtonClicked() {
 
     const { anchorWallet } = useWorkspace()
 
@@ -107,14 +107,20 @@ async function onRegisterButtonClicked() {
         error.value = false
         errorMessage.value = ""
         profileInitializedProperly.value = true
-       
+
     } else {
         setError("No existe un cuenta del tipo de perfil marcado para la clave pública seleccionada")
     }
 
     const store = useAuthStore()
     store.setAuthCode(code)
+    store.setLogin(userExists)
 
+    if (userExists) {
+        setTimeout(() => {
+            window.location.replace("/")
+        }, 450)
+    }
 }
 
 

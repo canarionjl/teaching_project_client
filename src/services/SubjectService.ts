@@ -53,16 +53,16 @@ class SubjectService {
         if(isProfessor) {
             user = await fetchProfessorAccount(program, anchorWallet) 
         } else {
-            user = await fetchStudentAccount(program.value, anchorWallet)
+            user = await fetchStudentAccount(program, anchorWallet)
         }
 
         console.log(user)
 
-        const smaller_subject_id_available: number = (await fetchIdAccount(this.workspace.program.value, "subject")).smallerIdAvailable
+        const smaller_subject_id_available: number = (await fetchIdAccount(program, "subject")).smallerIdAvailable
             
         for (let i = 1; i < smaller_subject_id_available; i++) {
             
-            const subject = await fetchSubjectAccount(this.workspace.program.value, i)
+            const subject = await fetchSubjectAccount(program, i)
             const subjectMustBePushed = user.subjects.includes(subject.code)
 
             if(subjectMustBePushed) {

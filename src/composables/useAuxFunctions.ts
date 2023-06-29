@@ -3,9 +3,6 @@ import { useWorkspace } from "./useWallet";
 import * as Borsh from 'borsh';
 import { useAuthStore } from "@/store/authCodeStore";
 import UserService from "@/services/UserService";
-import { time } from "console";
-
-
 
 export function numberToLEBytes(param: number): Uint8Array {
   const buffer = new ArrayBuffer(4);
@@ -15,14 +12,13 @@ export function numberToLEBytes(param: number): Uint8Array {
   return bytes;
 }
 
-
 export const getCourse = async (course: number) => {
 
-  if (course > 9) return 0;
+  if (course + 1 > 9) return 0;
 
   const { program } = useWorkspace()
 
-  const courseIdl = program.value.idl.types[4].type.variants[course]
+  const courseIdl = program.value.idl.types[4].type.variants[course + 1]
   const course_lowercase = courseIdl.name.toLowerCase()
   const course_object = { [course_lowercase]: {} }
 
@@ -33,6 +29,8 @@ export const getStateString = (state: any) => {
 
   let stateString = "Desconocido"
   const stateToCompare = JSON.stringify(state)
+
+  console.log(stateToCompare)
 
   switch (stateToCompare) {
 
@@ -45,7 +43,10 @@ export const getStateString = (state: any) => {
     case '{"waitingForHighRank":{}}':
       stateString = "Esperando por validación de un alto cargo"
       break
-    case '{"accepted":{}}' || '{ "acceptedAndTokensGranted":{}}':
+    case '{"accepted":{}}':
+      stateString = "Aceptada (tokens no entregados)"
+      break
+    case '{"acceptedAndTokensGranted":{}}':
       stateString = "Aceptada"
       break
     case '{"rejected":{}}':
@@ -78,9 +79,6 @@ export function getCourseIndex(courseObject: any): string {
 }
 
 export const courseList = ["Todos", "1º", "2º", "3º", "4º", "5º", "6º", "7º", "8º", "9º"]
-
-
-
 
 
 export function validateInputText(max_lengh: number, text: string): [boolean, string] {

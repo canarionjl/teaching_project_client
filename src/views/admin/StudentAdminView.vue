@@ -1,21 +1,12 @@
 <template>
     
     <div v-if="page == 0">
-        <WatchProfessorSubjects :isProfessor="true"/>
+        <WatchProfessorSubjects :isProfessor="false"/>
     </div>
 
     <div v-if="page == 1">
         <ProposalMasterComponent :proposalState="0"/>
     </div>
-
-    <div v-if="page == 2">
-        <ProposalMasterComponent :proposalState="1"/>
-    </div>
-
-    <div v-if="page == 3">
-        <PenaltiesComponent/>
-    </div>
-
     
 </template>
 
@@ -23,10 +14,9 @@
 
 import WatchProfessorSubjects from "@/components/admin/professor/WatchProfessorSubjects.vue"
 import ProposalMasterComponent from "@/components/admin/professor/ProposalMasterComponent.vue";
-import PenaltiesComponent from "@/components/admin/professor/PenaltiesComponent.vue";
+
 import { useRoute } from "vue-router";
 import { ref, Ref, onMounted } from 'vue'
-
 
 let page: Ref = ref(null)
 

@@ -12,7 +12,8 @@
             <div v-for="(subject, index) in subjectList" :key=index>
 
                 <SubjectListComponent :name="subject.name" :code="subject.code" :course="getCourseIndex(subject.course)"
-                    :pendingProposals="getArrayLength(subject.pendingProposals)" :id="subject.id" :readingMode="readingModeRef"/>
+                    :pendingProposals="getArrayLength(subject.pendingProposals)" :id="subject.id"
+                    :readingMode="readingModeRef" />
 
             </div>
 
@@ -32,7 +33,7 @@
 import SubjectListComponent from "@/components/subjects/SubjectListComponent.vue"
 import { getCourseIndex } from "@/composables/useAuxFunctions";
 import SubjectService from "@/services/SubjectService";
-import { onMounted, Ref, ref } from "vue";
+import { onMounted, Ref, ref, defineProps } from "vue";
 import { getArrayLength } from "@/composables/useAuxFunctions";
 import ErrorMessageComponent from '@/components/error/ErrorMessageComponent.vue'
 
@@ -44,12 +45,21 @@ let isLoading: Ref = ref(true);
 
 let readingModeRef: Ref = ref(false)
 
+const props = defineProps({
+
+    isProfessor: {
+        type: Boolean,
+        required: true
+    }
+
+})
+
 onMounted(async () => {
 
     try {
 
-        subjectList.value = await new SubjectService().getSubjectsForUser(true)
-        isLoading.value = false; 
+        subjectList.value = await new SubjectService().getSubjectsForUser(props.isProfessor)
+        isLoading.value = false;
 
     } catch {
 
@@ -63,7 +73,7 @@ onMounted(async () => {
 
         error.value = true;
         errorMessage.value = "No se encuentra ninguna asignatura que cumpla con los requisitos indicados"
-        
+
     }
 
 })

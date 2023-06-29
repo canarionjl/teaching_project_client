@@ -4,7 +4,7 @@
         <div class="d-flex flex-row justify-content-center align-items-center m-5">
 
             <i class="bi bi-file-earmark-pdf mb-2" id="pdfIcon"></i>
-            <h4 id="teachingProjectLink" class="px-2">Ver proyecto docente propuesto</h4>
+            <h4 id="teachingProjectLink" class="px-2" @click="onWatchTeachingProject">Ver proyecto docente propuesto</h4>
 
         </div>
         <div class="d-flex flex-row justify-content-center align-items-center">
@@ -23,30 +23,29 @@
 
 <script lang="ts" setup>
 
-import { Ref, ref, onBeforeMount, onMounted, defineEmits } from 'vue'
+import { Ref, ref, onBeforeMount, defineEmits } from 'vue'
 import { useProposalStore } from '@/store/proposalStore'
-import { compareValueOfObjects, getReturn, getUserInfo } from '@/composables/useAuxFunctions';
+import { compareValueOfObjects, getReturn } from '@/composables/useAuxFunctions';
 import ProposalService from '@/services/ProposalService';
 import { useAuthStore } from '@/store/authCodeStore';
+import IpfsService from '@/services/IpfsService';
 
 let proposal: Ref = ref(null)
 let subject: Ref = ref(null)
+let associatedProfessorProposal: Ref = ref(null)
 
 const emit = defineEmits(['resultInfoEmit'])
 
 const authCodeStore = useAuthStore()
-
 
 onBeforeMount(async () => {
 
     const proposalStore = useProposalStore()
     proposal.value = proposalStore.proposal
     subject.value = proposalStore.subject
+    associatedProfessorProposal.value = proposalStore.professorProposal
 
 })
-
-
-
 
 async function onValidateButtonClicked(vote: boolean) {
 
@@ -70,18 +69,19 @@ async function onValidateButtonClicked(vote: boolean) {
             if (vote) {
 
                 let creditTx = ""
+
                 if (compareValueOfObjects(proposal.value.userType, { professor: {} })) {
                     creditTx = await new ProposalService().giveCreditToProfessor(
                         proposal.value.id,
-                        proposal.value.studentCreatorPublicKey,
+                        proposal.value.creatorPublicKey,
                         authCodeStore.authCode,
                         subject.value.code
                     )
                 }
-                if (compareValueOfObjects(proposal.value.userType, { student: {} })) {
+                else if (compareValueOfObjects(proposal.value.userType, { student: {} })) {
                     creditTx = await new ProposalService().giveCreditToStudent(
                         proposal.value.id,
-                        proposal.value.studentCreatorPublicKey,
+                        proposal.value.creatorPublicKey,
                         authCodeStore.authCode,
                         subject.value.code
                     )
@@ -89,31 +89,32 @@ async function onValidateButtonClicked(vote: boolean) {
 
                 const creditLog = await getReturn(true, false, creditTx)
 
-                if(creditLog == true) {
+                if (creditLog == true) {
                     isOk = true
                     resultMessage = "Se ha aprobado correctamente la propuesta y los tokens se han entregado al creador"
+                } else {
+                    isOk = false
+                    resultMessage = "Se ha aprobado la propuesta pero los tokens no han podido ser entregados"
                 }
-
-            } else {
-
-                data = { isOk: true, resultMessage: "Se ha registrado su voto correctamente." }
-
             }
 
-            data = { isOk: true, resultMessage: "Se ha registrado su voto correctamente." }
-
+        } else {
+            isOk = false
+            resultMessage = "No se ha podido aprobar el proyecto docente. Inténtelo de nuevo más tarde."
         }
 
+    } else {
+        isOk = false
+        resultMessage = "No se ha podido aprobar el proyecto docente. Inténtelo de nuevo más tarde."
     }
 
-    else {
-
-        data = { isOk: false, resultMessage: "No se ha podido registrar su voto. Inténtelo de nuevo más tarde." }
-
-    }
-
+    let data = { isOk: isOk, resultMessage: resultMessage }
     emit('resultInfoEmit', data)
 
+}
+
+function onWatchTeachingProject() {
+    new IpfsService().watchTeachingProject(associatedProfessorProposal.value.teachingProjectReference)
 }
 
 </script>

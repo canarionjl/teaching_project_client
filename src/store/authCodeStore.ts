@@ -3,17 +3,17 @@ import { defineStore } from 'pinia';
 import CryptoJS from 'crypto-js';
 import { useLocalStorage } from "@vueuse/core"
 
-
 export const useAuthStore = defineStore('authCode', {
 
   state: () => {
 
     return {
 
-      authCode: useLocalStorage('authCode', '0000')
+      authCode: useLocalStorage('authCode', '0000'),
+      login: useLocalStorage('login', true)
 
     }
-    
+
   },
 
   getters: {
@@ -29,10 +29,13 @@ export const useAuthStore = defineStore('authCode', {
       if (code != "1111" && code != "2222" && code != "3333") {
         this.authCode = "0000"
       } else {
-        console.log(code)
         this.authCode = code
       }
 
+    },
+
+    setLogin(value: boolean) {
+      this.login = value
     }
 
   }

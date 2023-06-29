@@ -3,6 +3,7 @@ import MenuView from '@/views/menu/MenuView.vue'
 import SubjectMasterView from '@/views/subjects/SubjectMasterView.vue'
 import HighRankAdminView from '@/views/admin/HighRankAdminView.vue'
 import ProfessorAdminView from '@/views/admin/ProfessorAdminView.vue'
+import StudentAdminView from '@/views/admin/StudentAdminView.vue'
 import SubjectDetailView from '@/views/subjects/SubjectDetailView.vue'
 import CreateProposalView from '@/views/proposals/CreateProposalView.vue'
 import ProposalDetailView from '@/views/proposals/ProposalDetailView.vue'
@@ -30,6 +31,12 @@ const routes: Array<RouteRecordRaw> = [
         path: '/professorAdmin/:dataType',
         name: 'professorAdmin',
         component: ProfessorAdminView
+    },
+
+    {
+        path: '/studentAdmin/:dataType',
+        name: 'studentAdmin',
+        component: StudentAdminView
     },
 
     {

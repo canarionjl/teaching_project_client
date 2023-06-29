@@ -1,6 +1,6 @@
 import { useWorkspace } from "@/composables/useWallet";
 import * as useFindPDAMethods from "@/composables/useFindPDAMethods"
-import { fetchIdAccount, fetchProposalAccount, fetchProposalIdAccount, fetchSubjectAccount } from "./FetchAccountService";
+import { fetchIdAccount, fetchProfessorProposalAccount, fetchProposalAccount, fetchProposalIdAccount, fetchSubjectAccount } from "./FetchAccountService";
 import * as anchor from "@project-serum/anchor";
 import { TOKEN_PROGRAM_ID, ASSOCIATED_TOKEN_PROGRAM_ID, getAssociatedTokenAddress, getAccount } from "@solana/spl-token";
 
@@ -154,6 +154,10 @@ class ProposalService {
         return await fetchProposalAccount(this.workspace.program.value, id, subject_code)
     }
 
+    async fetchProfessorProposalAccountWithId(id: number, subject_code: number) {
+        return await fetchProfessorProposalAccount(this.workspace.program.value, id, subject_code)
+    }
+
     async voteProposalByStudent(proposal_id: number, subject_id: number, profesor_proposal_id: number, vote: boolean, subject_code: number): Promise<string> {
 
         const program = this.workspace.program.value
@@ -263,12 +267,12 @@ class ProposalService {
 
         const high_rank_account = await useFindPDAMethods.findPDAforHighRank(program.programId, anchorWallet)
         const proposal_account_pda = await useFindPDAMethods.findPDAforProposal(program.programId, proposal_id, subject_code)
-        const creator_account_pda = await useFindPDAMethods.findPDAforStudent(program.programId, student_creator_public_key)
+        const creator_account_pda = await useFindPDAMethods.findPDAforStudentPublicKey(program.programId, student_creator_public_key)
         const mint = await useFindPDAMethods.findPDAforMint(program.programId)
         const [pda, bump] = await useFindPDAMethods.findPDAforMintAuthority(program.programId, mint, identifier_code)
 
-        let mintAuthority: { pda: anchor.web3.PublicKey, bump: number };
-        mintAuthority = { pda: pda, bump: bump };
+     
+        const mintAuthority = { pda: pda, bump: bump };
 
         const associatedTokenAccount = await getAssociatedTokenAddress(mint, student_creator_public_key, false);
 
@@ -301,12 +305,11 @@ class ProposalService {
 
         const high_rank_account = await useFindPDAMethods.findPDAforHighRank(program.programId, anchorWallet)
         const proposal_account_pda = await useFindPDAMethods.findPDAforProposal(program.programId, proposal_id, subject_code)
-        const creator_account_pda = await useFindPDAMethods.findPDAforProfessor(program.programId, student_creator_public_key)
+        const creator_account_pda = await useFindPDAMethods.findPDAforProfessorPublicKey(program.programId, student_creator_public_key)
         const mint = await useFindPDAMethods.findPDAforMint(program.programId)
         const [pda, bump] = await useFindPDAMethods.findPDAforMintAuthority(program.programId, mint, identifier_code)
 
-        let mintAuthority: { pda: anchor.web3.PublicKey, bump: number };
-        mintAuthority = { pda: pda, bump: bump };
+        const mintAuthority = { pda: pda, bump: bump };
 
         const associatedTokenAccount = await getAssociatedTokenAddress(mint, student_creator_public_key, false);
 

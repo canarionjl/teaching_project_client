@@ -120,7 +120,7 @@ let errorAddingSubject: Ref = ref(null)
 
 onMounted(async () => {
     faculty_list.value = await new FacultyService().getAllFaculties()
-    course_list.value = courseList
+    course_list.value = ["1º", "2º", "3º", "4º", "5º", "6º", "7º", "8º", "9º"]
 })
 
 const onFacultyChanged = (async () => {

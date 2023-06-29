@@ -82,8 +82,8 @@ onBeforeMount(async () => {
 
         case "2222":
             if (systemIsInitialized) {
-                optionList.value = ["Mis asignaturas", "Mis propuestas pendientes", "Mis proyectos docentes pendientes"]
-                cssClassForButtons.value = ["bi bi-envelope", "bi bi-patch-question", "bi bi-info-square"]
+                optionList.value = ["Mis asignaturas", "Mis propuestas pendientes", "Mis proyectos docentes pendientes", "Ver mis penalizaciones"]
+                cssClassForButtons.value = ["bi bi-envelope", "bi bi-patch-question", "bi bi-info-square", "bi bi-x-octagon-fill"]
             }
             userType.value = "professor"
             registeredUser.value = true

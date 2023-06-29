@@ -13,7 +13,7 @@
             <div class="d-flex flex-column justify-content-between align-content-baseline ">
 
                 <h2>Código: <i>{{ props.code }}</i></h2>
-                <h4>Propuestas pendientes: <i>{{ props.pendingProposals }}</i></h4>
+                <h4>Propuestas totales: <i>{{ props.pendingProposals }}</i></h4>
 
             </div>
 

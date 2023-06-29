@@ -89,7 +89,7 @@ onMounted(async () => {
 
 async function getData() {
 
-    let isProfessor = false
+    let isProfessor
     let subjectList
 
     try {

@@ -216,8 +216,9 @@ function onWatchTeachingProjectSystem() {
 
 function userHasVotedTheSelectedProposal(proposal: any) {
 
-    while (userInfoRef.value == null);
+    if (readingModeRef.value) return false
 
+    while (userInfoRef.value == null);
     return userHasVotedTheProposal(userInfoRef.value, proposal)
 
 }
@@ -233,7 +234,7 @@ function evaluateProposalState(proposal: any) {
     let states = [{ votationInProgress: {} }, { waitingForTeacher: {} }, { waitingForHighRank: {} }]
 
     for (let i = 0; i < states.length; i++) {
-        console.log("Comparison between: ", states[i], " ", proposal.state, " --> ", compareValueOfObjects(states[i], proposal.state), " en índice: ",i)
+        console.log("Comparison between: ", states[i], " ", proposal.state, " --> ", compareValueOfObjects(states[i], proposal.state), " en índice: ", i)
         if (compareValueOfObjects(states[i], proposal.state)) return i
     }
 

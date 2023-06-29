@@ -48,7 +48,7 @@ onMounted(async () => {
     try {
 
         userHasVoted.value = userHasVotedTheProposal(await getUserInfo(), proposal.value)
-        console.log("USER HAS VOTED: ", userHasVoted.value)
+
 
     } catch {
 

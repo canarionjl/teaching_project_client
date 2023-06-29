@@ -6,7 +6,8 @@ export const useProposalStore = defineStore('proposalStore', {
 
         return {
             proposal: null,
-            subject:null
+            subject: null,
+            professorProposal: null
         }
 
     },
@@ -17,8 +18,12 @@ export const useProposalStore = defineStore('proposalStore', {
             this.proposal = proposal
         },
 
-        setSubject (subject: any) {
+        setSubject(subject: any) {
             this.subject = subject
+        },
+
+        setProfessorProposal(professorProposal: any) {
+            this.professorProposal = professorProposal
         }
 
     }

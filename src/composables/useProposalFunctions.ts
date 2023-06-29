@@ -1,8 +1,6 @@
 
 export function userHasVotedTheProposal(userInfo: any, proposal: any): boolean {
 
-    console.log(userInfo)
-
     let user_that_have_voted = [];
 
     if (userInfo[0] == true) {

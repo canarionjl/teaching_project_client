@@ -115,6 +115,8 @@ import { useAuthStore } from '@/store/authCodeStore';
 
 let proposal: Ref = ref(null)
 let subject: Ref = ref(null)
+let associatedProfessorProposal: Ref = ref(null)
+
 let publishing_date: Ref = ref(null)
 let ending_date: Ref = ref(null)
 let current_state: Ref = ref(null)
@@ -151,10 +153,12 @@ onBeforeMount(async () => {
 
         proposal.value = await new ProposalService().fetchProposalAccountWithId(proposal_id, subject_code)
         subject.value = await new SubjectService().fetchSubjectAccountWithId(proposal.value.subjectId)
+        associatedProfessorProposal.value = await new ProposalService().fetchProfessorProposalAccountWithId(proposal_id, subject_code)
 
         const store = useProposalStore()
         store.setProposal(proposal.value)
         store.setSubject(subject.value)
+        store.setProfessorProposal(associatedProfessorProposal.value)
 
         isLoading.value = false;
 
