@@ -144,7 +144,7 @@ const onCreateSubjectClicked = async () => {
 
     if (nameIsValid && facultyIdIsValid && degreeIdIsValid && specialtyIdIsValid && codeIsValid && fileIsValid) {
 
-        const course = await getCourse(selectedCourseId.value)
+        const course = await getCourse(selectedCourseId.value, 1)
         const reference = await new IpfsService().uploadFileToIPFS(file)
 
         const referenceIsValid = validateIpfsReference(reference)

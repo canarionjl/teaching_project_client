@@ -68,8 +68,6 @@ import ErrorMessageComponent from '@/components/error/ErrorMessageComponent.vue'
 import SuccessMessageComponent from '@/components/success/SuccessMessageComponent.vue';
 import { useWorkspace } from "@/composables/useWallet";
 import UserService from "@/services/UserService"
-import { useAuthStore } from '@/store/authCodeStore'
-import { storeToRefs } from 'pinia';
 import { getReturn } from '@/composables/useAuxFunctions';
 
 let profileSelectedRef: Ref = ref("")
@@ -97,24 +95,23 @@ async function onRegisterButtonClicked() {
 
     if (subjects == null) return
 
-    let code = "0000"
     let result_log = ""
 
     switch (profileSelectedRef.value) {
 
         case "highRank":
-            code = "1111"
+ 
             result_log = await new UserService().initializeHighRank()
             break
 
         case "professor":
-            code = "2222"
+
             result_log = await new UserService().initializeProfessor(subjects)
             break
 
         case "student":
             result_log = await new UserService().initializeStudent(subjects)
-            code = "3333"
+
             break
 
         default:
@@ -124,8 +121,6 @@ async function onRegisterButtonClicked() {
     const log = await getReturn(true, false, result_log)
     if (log == true) {
         profileInitializedProperly.value = true
-        const store = useAuthStore()
-        store.setAuthCode(code)
     }
 }
 

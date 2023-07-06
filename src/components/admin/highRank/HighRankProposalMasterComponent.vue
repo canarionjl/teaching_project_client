@@ -27,8 +27,8 @@
                         <div v-for="(proposal, i) in elm[2]" :key=i class="mb-5">
 
                             <ProposalListComponent :name="proposal.title" :id="proposal.id"
-                                :showVotingInfo="showVotingInfoRef" :votingInfo="false"
-                                :subjectCode="elm[1]" :proposalState="props.proposalState" />
+                                :showVotingInfo="showVotingInfoRef" :votingInfo="false" :subjectCode="elm[1]"
+                                :proposalState="props.proposalState" />
 
                         </div>
 
@@ -90,13 +90,13 @@ async function getData() {
 
         let proposalState = props.proposalState
 
-        if (proposalState != 2 || hashedAuthCode.toString() != "0ffe1abd1a08215353c233d6e009613e95eec4253832a761af28ff37ac5a150c") {
+        if (proposalState != 2 && proposalState != 3 || hashedAuthCode.toString() != "0ffe1abd1a08215353c233d6e009613e95eec4253832a761af28ff37ac5a150c") {
 
             throw new Error("User not authorized: user is not a high rank")
 
         }
 
-        proposalListOrderedBySubjects.value = await new ProposalService().getProposalsForHighRank()
+        proposalListOrderedBySubjects.value = await new ProposalService().getProposalsForHighRank(proposalState)
 
         isLoading.value = false;
 

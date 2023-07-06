@@ -11,7 +11,7 @@
 
             <div v-if="!error">
 
-                <div id="proposaltData">
+                <div id="proposalData">
 
                     <div id="title" class=" mb-2 mt-2">
                         <div class="d-flex flex-column justify-content-between align-items-center">
@@ -62,9 +62,19 @@
 
                         </div>
 
-                        <div v-if="proposalStateRef == 2">
-                    
-                            <ValidateProposalComponent @resultInfoEmit="setResultInfo" />
+                        <div v-if="highRankViewRef == true">
+
+                            <div v-if="proposalStateRef == 2">
+
+                                <ValidateProposalComponent @resultInfoEmit="setResultInfo" />
+
+                            </div>
+
+                            <div v-if="proposalStateRef == 3">
+
+                                <DeleteProposalComponent @resultInfoEmit="setResultInfo" />
+
+                            </div>
 
                         </div>
 
@@ -111,15 +121,16 @@ import { useProposalStore } from '@/store/proposalStore';
 import ErrorMessageComponent from '@/components/error/ErrorMessageComponent.vue';
 import SuccessMessageComponent from '@/components/success/SuccessMessageComponent.vue';
 import ValidateProposalComponent from '@/components/proposals/highRank/ValidateProposalComponent.vue';
+import DeleteProposalComponent from '@/components/proposals/highRank/DeleteProposalComponent.vue';
 import { useAuthStore } from '@/store/authCodeStore';
 
 let proposal: Ref = ref(null)
 let subject: Ref = ref(null)
 let associatedProfessorProposal: Ref = ref(null)
 
-let publishing_date: Ref = ref(null)
-let ending_date: Ref = ref(null)
-let current_state: Ref = ref(null)
+let publishing_date: Ref = ref(-1)
+let ending_date: Ref = ref(-1)
+let current_state: Ref = ref("Desconocido")
 
 let isLoading: Ref = ref(true)
 let error: Ref = ref(false)
@@ -131,6 +142,8 @@ let proposalStateRef: Ref = ref(false)
 let resultRef: Ref = ref(null)
 let resultMessageRef: Ref = ref("")
 
+let highRankViewRef: Ref = ref(false)
+
 onBeforeMount(async () => {
 
     const route = useRoute()
@@ -138,6 +151,8 @@ onBeforeMount(async () => {
     try {
 
         const proposal_id = Number(route.params.proposal_id).valueOf()
+        console.log("Proposal ID: ", proposal_id)
+
         const subject_code = Number(route.params.subject_code).valueOf()
         const reading_mode = String(route.params.readingMode).valueOf()
         const proposalState = Number(route.params.proposalState).valueOf()
@@ -147,8 +162,13 @@ onBeforeMount(async () => {
 
         const authStore = useAuthStore()
 
-        if (proposalState == 2 && authStore.hashedAuthCode != "0ffe1abd1a08215353c233d6e009613e95eec4253832a761af28ff37ac5a150c") {
-            throw new Error("User is not a highRank")
+        if (
+            (proposalState == 2 || proposalState == 3) &&
+            authStore.hashedAuthCode.toString() != "0ffe1abd1a08215353c233d6e009613e95eec4253832a761af28ff37ac5a150c"
+        ) {
+            highRankViewRef.value = false
+        } else {
+            highRankViewRef.value = true
         }
 
         proposal.value = await new ProposalService().fetchProposalAccountWithId(proposal_id, subject_code)
@@ -171,15 +191,20 @@ onBeforeMount(async () => {
     }
 
     setProposalData()
+
 })
 
 
 
 function setProposalData() {
 
-    publishing_date.value = convertUnixTimestampToDate(proposal.value.publishingTimestamp)
-    ending_date.value = convertUnixTimestampToDate(proposal.value.endingTimestamp)
-    current_state.value = getStateString(proposal.value.state)
+    if (proposal.value != null) {
+
+        publishing_date.value = convertUnixTimestampToDate(proposal.value.publishingTimestamp)
+        ending_date.value = convertUnixTimestampToDate(proposal.value.endingTimestamp)
+        current_state.value = getStateString(proposal.value.state)
+
+    }
 
 }
 

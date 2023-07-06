@@ -2,7 +2,7 @@ import { useWorkspace } from "@/composables/useWallet";
 import * as useFindPDAMethods from "@/composables/useFindPDAMethods"
 import { fetchIdAccount, fetchProfessorProposalAccount, fetchProposalAccount, fetchProposalIdAccount, fetchSubjectAccount } from "./FetchAccountService";
 import * as anchor from "@project-serum/anchor";
-import { TOKEN_PROGRAM_ID, ASSOCIATED_TOKEN_PROGRAM_ID, getAssociatedTokenAddress, getAccount } from "@solana/spl-token";
+import { TOKEN_PROGRAM_ID, ASSOCIATED_TOKEN_PROGRAM_ID, getAssociatedTokenAddress } from "@solana/spl-token";
 
 class ProposalService {
 
@@ -104,8 +104,12 @@ class ProposalService {
         const smaller_proposal_id_available = (await fetchProposalIdAccount(this.workspace.program.value, false, code)).smallerIdAvailable
 
         for (let i = 1; i < smaller_proposal_id_available; i++) {
-
-            const proposal = await fetchProposalAccount(program, i, code)
+            let proposal
+            try {
+                proposal = await fetchProposalAccount(program, i, code)
+            } catch {
+                break
+            }
 
             if (JSON.stringify(proposal.state) == JSON.stringify(state)) {
                 proposals.push(proposal)
@@ -129,18 +133,29 @@ class ProposalService {
         return proposals
     }
 
-    async getProposalsForHighRank() {
+    async getProposalsForHighRank(param: number) {
 
         const program = this.workspace.program.value
-
         const proposalsForHighRank = [];
+        let state = null;
+
+        if (param == 2) {
+            state = { waitingForHighRank: {} }
+        }
+        else if (param == 3) {
+            state = { rejected: {} }
+        }
+        else {
+            return []
+        }
+
         const smaller_subject_id_available = (await fetchIdAccount(this.workspace.program.value, "subject")).smallerIdAvailable
 
         for (let i = 1; i < smaller_subject_id_available; i++) {
 
             const subject = await fetchSubjectAccount(program, i)
 
-            const proposalForSubject = await this.getProposalForSubjectWithState({ waitingForHighRank: {} }, subject.code)
+            const proposalForSubject = await this.getProposalForSubjectWithState(state, subject.code)
             const subject_proposal_tuple = [subject.name, subject.code, proposalForSubject]
             proposalsForHighRank.push(subject_proposal_tuple)
 
@@ -271,7 +286,7 @@ class ProposalService {
         const mint = await useFindPDAMethods.findPDAforMint(program.programId)
         const [pda, bump] = await useFindPDAMethods.findPDAforMintAuthority(program.programId, mint, identifier_code)
 
-     
+
         const mintAuthority = { pda: pda, bump: bump };
 
         const associatedTokenAccount = await getAssociatedTokenAddress(mint, student_creator_public_key, false);
@@ -332,6 +347,30 @@ class ProposalService {
         return result;
 
     }
+
+    async deleteRejectedProposalByHighRank(proposal_id: number, subject_id: number, professor_proposal_id: number, subject_code: number): Promise<string> {
+
+        const program = this.workspace.program.value
+        const anchorWallet = this.workspace.anchorWallet
+
+        const proposal_pda = await useFindPDAMethods.findPDAforProposal(program.programId, proposal_id, subject_code)
+        const high_rank_pda = await useFindPDAMethods.findPDAforHighRank(program.programId, anchorWallet)
+        const subject_pda = await useFindPDAMethods.findPDAforSubject(program.programId, subject_id)
+        const professor_proposal_pda = await useFindPDAMethods.findPDAforProfessorProposal(program.programId, professor_proposal_id, subject_code)
+
+        const result = await program.methods.deleteRejectedProposalAccount()
+            .accounts({
+                authority: anchorWallet.publicKey,
+                highRankAccount: high_rank_pda,
+                proposalAccount: proposal_pda,
+                professorProposalAccount: professor_proposal_pda,
+                subjectAccount: subject_pda,
+            })
+            .rpc();
+
+        return result;
+    }
+
 }
 
 export default ProposalService

@@ -64,8 +64,6 @@ onBeforeMount(async () => {
     const systemIsInitialized = await new SystemService().systemIsInitialized()
     systemIsInitializedRef.value = systemIsInitialized
 
-    console.log(systemIsInitializedRef.value)
-
     switch (props.authCode) {
 
         case "1111":
@@ -82,8 +80,8 @@ onBeforeMount(async () => {
 
         case "2222":
             if (systemIsInitialized) {
-                optionList.value = ["Mis asignaturas", "Mis propuestas pendientes", "Mis proyectos docentes pendientes", "Ver mis penalizaciones"]
-                cssClassForButtons.value = ["bi bi-envelope", "bi bi-patch-question", "bi bi-info-square", "bi bi-x-octagon-fill"]
+                optionList.value = ["Mis asignaturas", "Mis propuestas pendientes", "Mis proyectos docentes pendientes", "Ver mis datos de participación"]
+                cssClassForButtons.value = ["bi bi-envelope", "bi bi-patch-question", "bi bi-info-square", "bi bi-file-earmark-person"]
             }
             userType.value = "professor"
             registeredUser.value = true
@@ -91,8 +89,8 @@ onBeforeMount(async () => {
 
         case "3333":
             if (systemIsInitialized) {
-                optionList.value = ["Mis asignaturas", "Mis propuestas pendientes"]
-                cssClassForButtons.value = ["bi bi-envelope", "bi bi-patch-question"]
+                optionList.value = ["Mis asignaturas", "Mis propuestas pendientes",  "Ver mis datos de participación"]
+                cssClassForButtons.value = ["bi bi-envelope", "bi bi-file-earmark-person"]
                 userType.value = "student"
             }
             registeredUser.value = true

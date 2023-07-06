@@ -13,7 +13,7 @@
     </div>
 
     <div v-if="page == 3">
-        <PenaltiesComponent/>
+        <InfoComponent :isProfessor="true"/>
     </div>
 
     
@@ -23,7 +23,7 @@
 
 import WatchProfessorSubjects from "@/components/admin/professor/WatchProfessorSubjects.vue"
 import ProposalMasterComponent from "@/components/admin/professor/ProposalMasterComponent.vue";
-import PenaltiesComponent from "@/components/admin/professor/PenaltiesComponent.vue";
+import InfoComponent from "@/components/admin/professor/InfoComponent.vue";
 import { useRoute } from "vue-router";
 import { ref, Ref, onMounted } from 'vue'
 

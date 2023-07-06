@@ -14,7 +14,7 @@ class SubjectService {
 
     async getSubjectsWith(specialty_id: number, course: number) {
 
-        const courseObject = await getCourse(course)
+        const courseObject = await getCourse(course, 0)
 
         const subjects = [];
         const smaller_subject_id_available: number = (await fetchIdAccount(this.workspace.program.value, "subject")).smallerIdAvailable

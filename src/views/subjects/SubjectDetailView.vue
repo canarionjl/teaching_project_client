@@ -178,30 +178,31 @@ onMounted(async () => {
         const readingMode = String(route.params.readingMode).valueOf() == 'true'
         readingModeRef.value = readingMode
 
-        console.log("Reading Mode from subject detail: ", readingMode)
-
         subject.value = await new SubjectService().fetchSubjectAccountWithId(id)
 
+        console.log(subject.value)
+
         const votationInProgressProposalList = await new ProposalService().getProposalForSubjectWithState({ votationInProgress: {} }, subject.value.code)
+        
         const waitingForTeacherProposalList = await new ProposalService().getProposalForSubjectWithState({ waitingForTeacher: {} }, subject.value.code)
         const waitingForHighRankProposalList = await new ProposalService().getProposalForSubjectWithState({ waitingForHighRank: {} }, subject.value.code)
-
+        
         pendingProposalList.value = []
         pendingProposalList.value.push(...votationInProgressProposalList, ...waitingForTeacherProposalList, ...waitingForHighRankProposalList)
-
+        console.log("HERE 2")
         const acceptedProposals = await new ProposalService().getProposalForSubjectWithState({ acceptedAndTokensGranted: {} }, subject.value.code)
         acceptedProposalList.value = acceptedProposals
 
         const rejectedProposals = await new ProposalService().getProposalForSubjectWithState({ rejected: {} }, subject.value.code)
         rejectedProposalList.value = rejectedProposals
-
+        
         faculty.value = await new FacultyService().getFacultyWithId(subject.value.id)
-        specialty.value = await new SpecialtyService().getSpecialtyWithId(subject.value.id)
-
+        specialty.value = await new SpecialtyService().getSpecialtyWithId(subject.value.specialtyId)
+       
         isLoading.value = false;
 
-    } catch {
-
+    } catch (err) {
+        console.log(err)
         errorMessage.value = "No se ha podido recuperar la información de la asignatura"
         isLoading.value = false;
         error.value = true;
@@ -217,7 +218,7 @@ function onWatchTeachingProjectSystem() {
 function userHasVotedTheSelectedProposal(proposal: any) {
 
     if (readingModeRef.value) return false
-
+    console.log("se entro aqui")
     while (userInfoRef.value == null);
     return userHasVotedTheProposal(userInfoRef.value, proposal)
 
@@ -234,7 +235,6 @@ function evaluateProposalState(proposal: any) {
     let states = [{ votationInProgress: {} }, { waitingForTeacher: {} }, { waitingForHighRank: {} }]
 
     for (let i = 0; i < states.length; i++) {
-        console.log("Comparison between: ", states[i], " ", proposal.state, " --> ", compareValueOfObjects(states[i], proposal.state), " en índice: ", i)
         if (compareValueOfObjects(states[i], proposal.state)) return i
     }
 

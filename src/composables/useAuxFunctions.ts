@@ -12,18 +12,19 @@ export function numberToLEBytes(param: number): Uint8Array {
   return bytes;
 }
 
-export const getCourse = async (course: number) => {
+export const getCourse = async (course: number, shift: number) => {
 
-  if (course + 1 > 9) return 0;
+  if (course + shift > 9) return 0;
 
   const { program } = useWorkspace()
 
-  const courseIdl = program.value.idl.types[4].type.variants[course + 1]
+  const courseIdl = program.value.idl.types[4].type.variants[course + shift]
   const course_lowercase = courseIdl.name.toLowerCase()
   const course_object = { [course_lowercase]: {} }
 
   return course_object
 }
+
 
 export const getStateString = (state: any) => {
 

@@ -89,13 +89,7 @@
                     <button type="submit" class="btn btn-primary btn-lg m-5 p-3">Buscar asignaturas</button>
                 </router-link>
                 <router-view />
-                <button type="submit" class="btn btn-primary btn-lg m-5 p-3" @click="onClick">Generar HighRank</button>
 
-            </div>
-
-            <div v-show="error">
-                <ErrorMessageComponent
-                    errorMessage="Error: no existen datos o estos no han podido ser recuperados en este momento" />
             </div>
 
         </div>
@@ -116,16 +110,13 @@
   
 <script lang="ts" setup>
 
-import { onBeforeMount, onMounted, Ref, ref } from "vue";
+import { onMounted, Ref, ref } from "vue";
 import FacultyService from "@/services/FacultyService"
 import DegreeService from "@/services/DegreeService"
-import { initDummyData } from "@/composables/useDummyData";
 import AdminMenuComponent from "@/components/admin/menu/AdminMenuComponent.vue"
 import SpecialtyService from "@/services/SpecialtyService";
 import { courseList } from "@/composables/useAuxFunctions"
-import ErrorMessageComponent from "@/components/error/ErrorMessageComponent.vue";
 import { useAuthStore } from "@/store/authCodeStore";
-import { storeToRefs } from "pinia";
 
 const faculty_list: Ref = ref(null);
 const degree_list: Ref = ref(null);
@@ -137,23 +128,18 @@ let selectedDegreeId: Ref = ref(0)
 let selectedSpecialtyId: Ref = ref(0)
 let selectedCourseId: Ref = ref(0)
 
-let error: Ref = ref(false)
-
 let authCodeRef: Ref = ref("0000")
 
 const store = useAuthStore()
 
 authCodeRef.value = store.authCode
 
-console.log(authCodeRef.value)
-
-
 onMounted(async () => {
 
     try {
         faculty_list.value = await new FacultyService().getAllFaculties()
-    } catch {
-        // setError(true)
+    } catch (err) {
+        return
     }
 
 });
@@ -164,7 +150,7 @@ const onFacultyChanged = async () => {
     try {
         degree_list.value = await new DegreeService().getAllDegreesForFaculty(selectedFacultyId.value)
     } catch {
-        // setError(true)
+        return
     }
 
 };
@@ -175,7 +161,7 @@ const onDegreeChanged = async () => {
     try {
         specialty_list.value = await new SpecialtyService().getAllSpecialtysForDegree(selectedDegreeId.value)
     } catch {
-        // setError(true)
+        return
     }
 
 };
@@ -186,14 +172,6 @@ const onSpecialtyChanged = async () => {
     course_list.value = courseList
 };
 
-
-
-const onClick = () => {
-
-    
-    initDummyData()
-
-}
 
 function resetSelectValues(faculty_ac: boolean, degree_ac: boolean, specialty_ac: boolean, course_ac: boolean) {
 
@@ -210,10 +188,6 @@ function resetSelectValues(faculty_ac: boolean, degree_ac: boolean, specialty_ac
         selectedCourseId.value = 0
     }
 
-}
-
-function setError(value: boolean) {
-    error.value = value
 }
 
 </script>

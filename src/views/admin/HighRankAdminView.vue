@@ -21,6 +21,10 @@
             <HighRankProposalMasterComponent :proposalState=2 />
         </div>
 
+        <div v-else-if="page == 5">
+            <HighRankProposalMasterComponent :proposalState=3 />
+        </div>
+
     </div>
 
     <div v-if="!systemIsInitializedRef">
@@ -30,7 +34,6 @@
         </div>
 
     </div>
-
 </template>
 
 <script lang="ts" setup>
@@ -48,7 +51,7 @@ import { ref, Ref, onBeforeMount } from 'vue'
 let page: Ref = ref(null)
 let systemIsInitializedRef: Ref = ref(false)
 
-onBeforeMount( () => {
+onBeforeMount(() => {
     const route = useRoute()
     page.value = route.params.dataType
     systemIsInitializedRef.value = route.params.systemInitialized == 'true'

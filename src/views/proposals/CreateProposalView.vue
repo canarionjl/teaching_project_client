@@ -116,7 +116,7 @@ const onCreateProposalClicked = async () => {
             tx = await new ProposalService().createProposalByProfessor(proposalTitle.value, proposalContent.value, subject.value.id)
         }
         else if (hashedAuthCode.toString() == "318aee3fed8c9d040d35a7fc1fa776fb31303833aa2de885354ddf3d44d8fb69") {
-            tx = await new ProposalService().createProposalByProfessor(proposalTitle.value, proposalContent.value, subject.value.id)
+            tx = await new ProposalService().createProposalByStudent(proposalTitle.value, proposalContent.value, subject.value.id)
         }
         else {
             error.value = true

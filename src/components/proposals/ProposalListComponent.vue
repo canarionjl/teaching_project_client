@@ -14,7 +14,7 @@
                 <div class="d-flex flex-row justify-content-start align-items-center col-9">
 
                     <h4>{{ nameRef }}</h4>
-                    <h6 class="px-2" v-show="showVotingInfoRef && props.proposalState < 2" id="votingInfo">(<i>{{ votingInfoRef }} has votado esta
+                    <h6 class="px-2" v-show="showVotingInfoRef && props.proposalState < 2" id="votingInfo">(<i>{{ votingInfoRef }}has votado esta
                             propuesta</i> {{ emojiVotingInfoRef }})
                     </h6>
 
@@ -92,7 +92,7 @@ onBeforeMount(() => {
 
         const votingInfo = Boolean(props.votingInfo).valueOf()
 
-        let value = "no"
+        let value = "no "
         let emoji = "❌"
 
         if (votingInfo) {
