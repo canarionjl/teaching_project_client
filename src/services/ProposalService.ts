@@ -107,10 +107,11 @@ class ProposalService {
             let proposal
             try {
                 proposal = await fetchProposalAccount(program, i, code)
+                console.log(proposal)
             } catch {
-                break
+                continue
             }
-
+       
             if (JSON.stringify(proposal.state) == JSON.stringify(state)) {
                 proposals.push(proposal)
             }

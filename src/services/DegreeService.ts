@@ -26,6 +26,12 @@ class DegreeService {
         return degrees;
     }
 
+    async getDegreeWithId(id: number) {
+
+        return await fetchDegreeAccount(this.workspace.program.value, id)
+        
+    }
+
     async createDegree (name: string, faculty_id: number): Promise<string> {
 
         const program = this.workspace.program.value

@@ -144,7 +144,7 @@ import { onMounted, Ref, ref } from 'vue';
 import { useRoute } from "vue-router";
 import ProposalListComponent from '@/components/proposals/ProposalListComponent.vue';
 import ProposalService from '@/services/ProposalService';
-import FacultyService from '@/services/FacultyService';
+import DegreeService from '@/services/DegreeService';
 import SpecialtyService from '@/services/SpecialtyService';
 import { getCourseIndex, getArrayLength, getUserInfo, compareValueOfObjects } from '@/composables/useAuxFunctions';
 import IpfsService from '@/services/IpfsService';
@@ -180,8 +180,6 @@ onMounted(async () => {
 
         subject.value = await new SubjectService().fetchSubjectAccountWithId(id)
 
-        console.log(subject.value)
-
         const votationInProgressProposalList = await new ProposalService().getProposalForSubjectWithState({ votationInProgress: {} }, subject.value.code)
         
         const waitingForTeacherProposalList = await new ProposalService().getProposalForSubjectWithState({ waitingForTeacher: {} }, subject.value.code)
@@ -189,14 +187,13 @@ onMounted(async () => {
         
         pendingProposalList.value = []
         pendingProposalList.value.push(...votationInProgressProposalList, ...waitingForTeacherProposalList, ...waitingForHighRankProposalList)
-        console.log("HERE 2")
         const acceptedProposals = await new ProposalService().getProposalForSubjectWithState({ acceptedAndTokensGranted: {} }, subject.value.code)
         acceptedProposalList.value = acceptedProposals
 
         const rejectedProposals = await new ProposalService().getProposalForSubjectWithState({ rejected: {} }, subject.value.code)
         rejectedProposalList.value = rejectedProposals
         
-        faculty.value = await new FacultyService().getFacultyWithId(subject.value.id)
+        faculty.value = await new DegreeService().getDegreeWithId(subject.value.degreeId)
         specialty.value = await new SpecialtyService().getSpecialtyWithId(subject.value.specialtyId)
        
         isLoading.value = false;
